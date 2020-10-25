@@ -81,7 +81,7 @@ if (__name__ == "__main__"):
 
     if playlist != "":
         tracks = getTracks(getResultsFromPlaylist(playlistURL))
-    tracks = getTracks(getResultsFromPlaylist(seed, seedType))
+    tracks = getTracks(getResultsFromSeed(seed, seedType))
 
     print("Searching songs...");
     songs = [];
