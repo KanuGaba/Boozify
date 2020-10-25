@@ -42,18 +42,8 @@ def getTracks(playlistURL):
 
     return trackList;
 
-def searchYoutubeAlternative(songName):
-    # YouTube will block you if you query too many songs using this search.
-    textToSearch = songName
-    query = urllib.parse.quote(textToSearch)
-    url = "https://www.youtube.com/results?search_query=" + query
-    response = urllib.request.urlopen(url)
-    html = response.read()
-    soup = bs4(html, 'html.parser')
-    for vid in soup.findAll(attrs={'class': 'yt-uix-tile-link'}):
-        print('https://www.youtube.com' + vid['href'])
-
 def searchYoutube(songName):
+	songName += " Music Video"
     api = youtube.API(client_id=APIs["youtube"]["client_id"],
               client_secret=APIs["youtube"]["client_secret"],
               api_key=APIs["youtube"]["api_key"]);
