@@ -42,7 +42,6 @@ def getResultsFromPlaylist(playlistURL):
     # Getting a playlist.
     return spotify.user_playlist_tracks(user="",playlist_id=playlistURL)
 
-    
 def getTracks(results):
     trackList = []
     # For each track in the playlist.
@@ -76,12 +75,12 @@ def searchYoutube(songName):
 if (__name__ == "__main__"):
     playlistURL = str(input("Insert Spotify playlist URL: "))
     # will have to fix this later idk how we will do the front end stuff with this
-    seed = str(input("Insert genre, artist, or song: "))
-    seedType = str(input("Insert genre, artist, or song: "))
-
     if playlistURL != "":
         tracks = getTracks(getResultsFromPlaylist(playlistURL))
-    tracks = getTracks(getResultsFromSeed(seed, seedType))
+    else:
+        seed = str(input("Select \"genre\", \"artist\", or \"song\": "))
+        seedType = str(input("Insert genre, artist, or song: "))
+        tracks = getTracks(getResultsFromSeed(seed, seedType))
 
     print("Searching songs...")
     songs = []
