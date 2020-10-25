@@ -31,8 +31,8 @@ def getResultsFromSeed(seed, seedType):
     	# have to double check results dict
         items = results['tracks']['items']
         if len(items) > 0:
-            artist = items[0]
-            return recommendations(seed_artists=[artist['url']], limit=60)
+            track = items[0]
+            return recommendations(seed_tracks=[track['url']], limit=60)
 
 def getResultsFromPlaylist(playlistURL):
 	# Creating and authenticating our Spotify app.
