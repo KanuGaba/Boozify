@@ -44,7 +44,7 @@ def getResultsFromPlaylist(playlistURL):
 
     
 def getTracks(results):
-    trackList = [];
+    trackList = []
     # For each track in the playlist.
     for i in results["items"]:
         # In case there's only one artist.
@@ -53,25 +53,25 @@ def getTracks(results):
             trackList.append(i["track"]["name"] + " - " + i["track"]["artists"][0]["name"])
         # In case there's more than one artist.
         else:
-            nameString = "";
+            nameString = ""
             # For each artist in the track.
             for index, b in enumerate(i["track"]["artists"]):
-                nameString += (b["name"]);
+                nameString += (b["name"])
                 # If it isn't the last artist.
                 if (i["track"]["artists"].__len__() - 1 != index):
-                    nameString += ", ";
+                    nameString += ", "
             # Adding the track to the list.
-            trackList.append(i["track"]["name"] + " - " + nameString);
+            trackList.append(i["track"]["name"] + " - " + nameString)
 
-    return trackList;
+    return trackList
 
 def searchYoutube(songName):
     songName += " Music Video"
     api = youtube.API(client_id=APIs["youtube"]["client_id"],
               client_secret=APIs["youtube"]["client_secret"],
-              api_key=APIs["youtube"]["api_key"]);
-    video = api.get('search', q=songName, maxResults=1, type='video', order='relevance');
-    return("https://www.youtube.com/watch?v="+video["items"][0]["id"]["videoId"]);
+              api_key=APIs["youtube"]["api_key"])
+    video = api.get('search', q=songName, maxResults=1, type='video', order='relevance')
+    return("https://www.youtube.com/watch?v="+video["items"][0]["id"]["videoId"])
 
 if (__name__ == "__main__"):
     playlist = str(input("Insert Spotify playlist URL: "))
@@ -83,12 +83,12 @@ if (__name__ == "__main__"):
         tracks = getTracks(getResultsFromPlaylist(playlistURL))
     tracks = getTracks(getResultsFromSeed(seed, seedType))
 
-    print("Searching songs...");
-    songs = [];
+    print("Searching songs...")
+    songs = []
     for i in tracks:
-        songs.append(searchYoutube(i));
-    print("Search finished!");
+        songs.append(searchYoutube(i))
+    print("Search finished!")
 
-    print("URL LIST: ");
+    print("URL LIST: ")
     for i in songs:
-        print(i);
+        print(i)
