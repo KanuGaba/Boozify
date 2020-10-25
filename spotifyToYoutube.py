@@ -10,14 +10,40 @@ import youtube
 with open("config.json", encoding='utf-8-sig') as json_file:
     APIs = json.load(json_file)
 
-def getTracks(playlistURL):
+def getResultsFromSeed(seed, seedType):
     # Creating and authenticating our Spotify app.
     client_credentials_manager = SpotifyClientCredentials(APIs["spotify"]["client_id"], APIs["spotify"]["client_secret"])
     spotify = spotipy.Spotify(client_credentials_manager=client_credentials_manager)
 
-    # Getting a playlist.
-    results = spotify.user_playlist_tracks(user="",playlist_id=playlistURL)
+    if seedType == "genre":
+    	# may need to make this a dropdown and use recommendation_genre_seeds()
+    	# just gonna assume for now that they know what they're doing
+    	return recommendations(seed_genre=seed, limit=60)
+    elif seedType == "artist":
+        results = spotify.search(q='artist:' + seed, type='artist')
+        items = results['artists']['items']
+        if len(items) > 0:
+            artist = items[0]
+            # need to check that artist['url'] works
+            return recommendations(seed_artists=[artist['url']], limit=60)
+    elif seedType == "song":
+    	results = spotify.search(q='name:' + seed, type='track')
+    	# have to double check results dict
+        items = results['tracks']['items']
+        if len(items) > 0:
+            artist = items[0]
+            return recommendations(seed_artists=[artist['url']], limit=60)
 
+def getResultsFromPlaylist(playlistURL):
+	# Creating and authenticating our Spotify app.
+    client_credentials_manager = SpotifyClientCredentials(APIs["spotify"]["client_id"], APIs["spotify"]["client_secret"])
+    spotify = spotipy.Spotify(client_credentials_manager=client_credentials_manager)
+
+    # Getting a playlist.
+    return spotify.user_playlist_tracks(user="",playlist_id=playlistURL)
+
+    
+def getTracks(results):
     trackList = [];
     # For each track in the playlist.
     for i in results["tracks"]["items"]:
@@ -48,7 +74,15 @@ def searchYoutube(songName):
     return("https://www.youtube.com/watch?v="+video["items"][0]["id"]["videoId"]);
 
 if (__name__ == "__main__"):
-    tracks = getTracks(str(input("Insert Spotify playlist URL: ")));
+    playlist = str(input("Insert Spotify playlist URL: "))
+    # will have to fix this later idk how we will do the front end stuff with this
+    seed = str(input("Insert genre, artist, or song: "))
+    seedType = str(input("Insert genre, artist, or song: "))
+
+    if playlist != "":
+        tracks = getTracks(getResultsFromPlaylist(playlistURL))
+    tracks = getTracks(getResultsFromSeed(seed, seedType))
+
     print("Searching songs...");
     songs = [];
     for i in tracks:
