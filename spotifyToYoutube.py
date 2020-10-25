@@ -11,22 +11,22 @@ with open("config.json", encoding='utf-8-sig') as json_file:
     APIs = json.load(json_file)
 
 def getResultsFromSeed(seed, seedType):
-	# Creating and authenticating our Spotify app.
+    # Creating and authenticating our Spotify app.
     client_credentials_manager = SpotifyClientCredentials(APIs["spotify"]["client_id"], APIs["spotify"]["client_secret"])
     spotify = spotipy.Spotify(client_credentials_manager=client_credentials_manager)
 
-    if seedType == "Genre":
+    if seedType == "genre":
     	# may need to make this a dropdown and use recommendation_genre_seeds()
     	# just gonna assume for now that they know what they're doing
     	return recommendations(seed_genre=seed, limit=60)
-    elif seedType == "Artist":
+    elif seedType == "artist":
         results = spotify.search(q='artist:' + seed, type='artist')
         items = results['artists']['items']
         if len(items) > 0:
             artist = items[0]
             # need to check that artist['url'] works
             return recommendations(seed_artists=[artist['url']], limit=60)
-    elif seedType == "Song":
+    elif seedType == "song":
     	results = spotify.search(q='name:' + seed, type='track')
     	# have to double check results dict
         items = results['tracks']['items']
@@ -74,12 +74,12 @@ def searchYoutube(songName):
     return("https://www.youtube.com/watch?v="+video["items"][0]["id"]["videoId"]);
 
 if (__name__ == "__main__"):
-	playlist = str(input("Insert Spotify playlist URL: "))
-	# will have to fix this later idk how we will do the front end stuff with this
-	seed = str(input("Insert genre, artist, or song: "))
-	seedType = str(input("Insert genre, artist, or song: "))
+    playlist = str(input("Insert Spotify playlist URL: "))
+    # will have to fix this later idk how we will do the front end stuff with this
+    seed = str(input("Insert genre, artist, or song: "))
+    seedType = str(input("Insert genre, artist, or song: "))
 
-	if playlist != "":
+    if playlist != "":
         tracks = getTracks(getResultsFromPlaylist(playlistURL))
     tracks = getTracks(getResultsFromPlaylist(seed, seedType))
 
