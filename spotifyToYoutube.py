@@ -16,9 +16,9 @@ def getResultsFromSeed(seed, seedType):
     spotify = spotipy.Spotify(client_credentials_manager=client_credentials_manager)
 
     if seedType == "genre":
-    	# may need to make this a dropdown and use recommendation_genre_seeds()
-    	# just gonna assume for now that they know what they're doing
-    	return recommendations(seed_genre=seed, limit=60)
+        # may need to make this a dropdown and use recommendation_genre_seeds()
+        # just gonna assume for now that they know what they're doing
+        return recommendations(seed_genre=seed, limit=60)
     elif seedType == "artist":
         results = spotify.search(q='artist:' + seed, type='artist')
         items = results['artists']['items']
@@ -27,15 +27,15 @@ def getResultsFromSeed(seed, seedType):
             # need to check that artist['url'] works
             return recommendations(seed_artists=[artist['url']], limit=60)
     elif seedType == "song":
-    	results = spotify.search(q='name:' + seed, type='track')
-    	# have to double check results dict
+        results = spotify.search(q='name:' + seed, type='track')
+        # have to double check results dict
         items = results['tracks']['items']
         if len(items) > 0:
             track = items[0]
             return recommendations(seed_tracks=[track['url']], limit=60)
 
 def getResultsFromPlaylist(playlistURL):
-	# Creating and authenticating our Spotify app.
+    # Creating and authenticating our Spotify app.
     client_credentials_manager = SpotifyClientCredentials(APIs["spotify"]["client_id"], APIs["spotify"]["client_secret"])
     spotify = spotipy.Spotify(client_credentials_manager=client_credentials_manager)
 
