@@ -46,7 +46,7 @@ def getResultsFromPlaylist(playlistURL):
 def getTracks(results):
     trackList = [];
     # For each track in the playlist.
-    for i in results["tracks"]["items"]:
+    for i in results["items"]:
         # In case there's only one artist.
         if (i["track"]["artists"].__len__() == 1):
             # We add trackName - artist.
