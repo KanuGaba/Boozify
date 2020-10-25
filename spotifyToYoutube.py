@@ -74,12 +74,12 @@ def searchYoutube(songName):
     return("https://www.youtube.com/watch?v="+video["items"][0]["id"]["videoId"])
 
 if (__name__ == "__main__"):
-    playlist = str(input("Insert Spotify playlist URL: "))
+    playlistURL = str(input("Insert Spotify playlist URL: "))
     # will have to fix this later idk how we will do the front end stuff with this
     seed = str(input("Insert genre, artist, or song: "))
     seedType = str(input("Insert genre, artist, or song: "))
 
-    if playlist != "":
+    if playlistURL != "":
         tracks = getTracks(getResultsFromPlaylist(playlistURL))
     tracks = getTracks(getResultsFromSeed(seed, seedType))
 
