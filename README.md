@@ -3,5 +3,6 @@ A web app that automatically generates a Power Hour mix for partying college stu
 
 ### Setup
 ```bash
-source bin/setup
+./bin/setup
+source env/bin/activate
 ```
