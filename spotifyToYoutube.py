@@ -45,11 +45,11 @@ def getResultsFromPlaylist(playlistURL):
 def getTracks(results):
     trackList = []
     # For each track in the playlist.
-    for i in results["items"]:
+    for i in results["items"]: # IF SEED, THEN restults["tracks"]
         # In case there's only one artist.
-        if (i["track"]["artists"].__len__() == 1):
+        if (i["track"]["artists"].__len__() == 1): # IF SEED, THEN i["artists"]
             # We add trackName - artist.
-            trackList.append(i["track"]["name"] + " - " + i["track"]["artists"][0]["name"])
+            trackList.append(i["track"]["name"] + " - " + i["track"]["artists"][0]["name"]) # IF SEED, THEN i["name"]
         # In case there's more than one artist.
         else:
             nameString = ""
