@@ -25,7 +25,7 @@ def getResultsFromSeed(seed, seedType):
         if len(items) > 0:
             artist = items[0]
             # need to check that artist['url'] works
-            return recommendations(seed_artists=[artist['url']], limit=60)
+            return recommendations(seed_artists=[artist['external_urls']['spotify']], limit=60)
     elif seedType == "song":
         results = spotify.search(q='name:' + seed, type='track')
         # have to double check results dict
