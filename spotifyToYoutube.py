@@ -16,24 +16,41 @@ def getResultsFromSeed(seed, seedType):
     spotify = spotipy.Spotify(client_credentials_manager=client_credentials_manager)
 
     if seedType == "genre":
-        # may need to make this a dropdown and use recommendation_genre_seeds()
-        # just gonna assume for now that they know what they're doing
-        if seed in spotify.recommendation_genre_seeds():
-        	return spotify.recommendations(seed_genres=[seed], limit=60)
+        if seed in spotify.recommendation_genre_seeds()['genres']:
+            results = spotify.recommendations(seed_genres=[seed], limit=60)
     elif seedType == "artist":
-        results = spotify.search(q='artist:' + seed, type='artist')
-        items = results['artists']['items']
+        search = spotify.search(q='artist:' + seed, type='artist')
+        items = search['artists']['items']
         if len(items) > 0:
             artist = items[0]
             # need to check that artist['url'] works
-            return spotify.recommendations(seed_artists=[artist['external_urls']['spotify']], limit=60)
+            results = spotify.recommendations(seed_artists=[artist['external_urls']['spotify']], limit=60)
     # elif seedType == "song":
     #     results = spotify.search(q='name:' + seed, type='track')
-    #     # have to double check results dict
     #     items = results['tracks']['items']
     #     if len(items) > 0:
     #         track = items[0]
     #         return spotify.recommendations(seed_tracks=[track['url']], limit=60)
+    trackList = []
+    # For each track in the playlist.
+    for i in results["tracks"]: # IF SEED, THEN restults["tracks"]
+        # In case there's only one artist.
+        if (i["artists"].__len__() == 1): # IF SEED, THEN i["artists"]
+            # We add trackName - artist.
+            trackList.append(i["name"] + " - " + i["artists"][0]["name"]) # IF SEED, THEN i["name"]
+        # In case there's more than one artist.
+        else:
+            nameString = ""
+            # For each artist in the track.
+            for index, b in enumerate(i["artists"]):
+                nameString += (b["name"])
+                # If it isn't the last artist.
+                if (i["artists"].__len__() - 1 != index):
+                    nameString += ", "
+            # Adding the track to the list.
+            trackList.append(i["name"] + " - " + nameString)
+
+    return trackList
 
 def getResultsFromPlaylist(playlistURL):
     # Creating and authenticating our Spotify app.
@@ -41,9 +58,8 @@ def getResultsFromPlaylist(playlistURL):
     spotify = spotipy.Spotify(client_credentials_manager=client_credentials_manager)
 
     # Getting a playlist.
-    return spotify.user_playlist_tracks(user="",playlist_id=playlistURL)
+    results = spotify.user_playlist_tracks(user="",playlist_id=playlistURL)
 
-def getTracks(results):
     trackList = []
     # For each track in the playlist.
     for i in results["items"]: # IF SEED, THEN restults["tracks"]
@@ -64,6 +80,28 @@ def getTracks(results):
             trackList.append(i["track"]["name"] + " - " + nameString)
 
     return trackList
+
+# def getTracks(results):
+#     trackList = []
+#     # For each track in the playlist.
+#     for i in results["items"]: # IF SEED, THEN restults["tracks"]
+#         # In case there's only one artist.
+#         if (i["track"]["artists"].__len__() == 1): # IF SEED, THEN i["artists"]
+#             # We add trackName - artist.
+#             trackList.append(i["track"]["name"] + " - " + i["track"]["artists"][0]["name"]) # IF SEED, THEN i["name"]
+#         # In case there's more than one artist.
+#         else:
+#             nameString = ""
+#             # For each artist in the track.
+#             for index, b in enumerate(i["track"]["artists"]):
+#                 nameString += (b["name"])
+#                 # If it isn't the last artist.
+#                 if (i["track"]["artists"].__len__() - 1 != index):
+#                     nameString += ", "
+#             # Adding the track to the list.
+#             trackList.append(i["track"]["name"] + " - " + nameString)
+
+#     return trackList
 
 def searchYoutube(songName):
     songName += " Music Video"
