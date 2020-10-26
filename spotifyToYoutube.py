@@ -10,7 +10,7 @@ import youtube
 with open("config.json", encoding='utf-8-sig') as json_file:
     APIs = json.load(json_file)
 
-def getResultsFromSeed(seed, seedType):
+def getTracksFromSeed(seed, seedType):
     # Creating and authenticating our Spotify app.
     client_credentials_manager = SpotifyClientCredentials(APIs["spotify"]["client_id"], APIs["spotify"]["client_secret"])
     spotify = spotipy.Spotify(client_credentials_manager=client_credentials_manager)
@@ -52,7 +52,7 @@ def getResultsFromSeed(seed, seedType):
 
     return trackList
 
-def getResultsFromPlaylist(playlistURL):
+def getTracksFromPlaylist(playlistURL):
     # Creating and authenticating our Spotify app.
     client_credentials_manager = SpotifyClientCredentials(APIs["spotify"]["client_id"], APIs["spotify"]["client_secret"])
     spotify = spotipy.Spotify(client_credentials_manager=client_credentials_manager)
@@ -121,11 +121,11 @@ if (__name__ == "__main__"):
     #     seed = str(input("Insert genre, artist, or song: "))
     #     tracks = getTracks(getResultsFromSeed(seed, seedType))
     if playlistURL != "":
-        tracks = getResultsFromPlaylist(playlistURL)
+        tracks = getTracksFromPlaylist(playlistURL)
     else:
         seedType = str(input("Select \"genre\", \"artist\", or \"song\": "))
         seed = str(input("Insert genre, artist, or song: "))
-        tracks = getResultsFromSeed(seed, seedType)
+        tracks = getTracksFromSeed(seed, seedType)
 
     print("Searching songs...")
     songs = []
