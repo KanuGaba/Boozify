@@ -123,8 +123,8 @@ if (__name__ == "__main__"):
     if playlistURL != "":
         tracks = getTracksFromPlaylist(playlistURL)
     else:
-        seedType = str(input("Select \"genre\", \"artist\", or \"song\": "))
-        seed = str(input("Insert genre, artist, or song: "))
+        seedType = str(input("Select \"genre\" or \"artist\": "))
+        seed = str(input("Insert genre or artist: "))
         tracks = getTracksFromSeed(seed, seedType)
 
     print("Searching songs...")
