@@ -23,7 +23,6 @@ def getTracksFromSeed(seed, seedType):
         items = search['artists']['items']
         if len(items) > 0:
             artist = items[0]
-            # need to check that artist['url'] works
             results = spotify.recommendations(seed_artists=[artist['external_urls']['spotify']], limit=60)
     # elif seedType == "song":
     #     results = spotify.search(q='name:' + seed, type='track')
@@ -33,11 +32,11 @@ def getTracksFromSeed(seed, seedType):
     #         return spotify.recommendations(seed_tracks=[track['url']], limit=60)
     trackList = []
     # For each track in the playlist.
-    for i in results["tracks"]: # IF SEED, THEN restults["tracks"]
+    for i in results["tracks"]:
         # In case there's only one artist.
-        if (i["artists"].__len__() == 1): # IF SEED, THEN i["artists"]
+        if (i["artists"].__len__() == 1):
             # We add trackName - artist.
-            trackList.append(i["name"] + " - " + i["artists"][0]["name"]) # IF SEED, THEN i["name"]
+            trackList.append(i["name"] + " - " + i["artists"][0]["name"])
         # In case there's more than one artist.
         else:
             nameString = ""
@@ -62,11 +61,11 @@ def getTracksFromPlaylist(playlistURL):
 
     trackList = []
     # For each track in the playlist.
-    for i in results["items"]: # IF SEED, THEN restults["tracks"]
+    for i in results["items"]:
         # In case there's only one artist.
-        if (i["track"]["artists"].__len__() == 1): # IF SEED, THEN i["artists"]
+        if (i["track"]["artists"].__len__() == 1):
             # We add trackName - artist.
-            trackList.append(i["track"]["name"] + " - " + i["track"]["artists"][0]["name"]) # IF SEED, THEN i["name"]
+            trackList.append(i["track"]["name"] + " - " + i["track"]["artists"][0]["name"])
         # In case there's more than one artist.
         else:
             nameString = ""
@@ -81,28 +80,6 @@ def getTracksFromPlaylist(playlistURL):
 
     return trackList
 
-# def getTracks(results):
-#     trackList = []
-#     # For each track in the playlist.
-#     for i in results["items"]: # IF SEED, THEN restults["tracks"]
-#         # In case there's only one artist.
-#         if (i["track"]["artists"].__len__() == 1): # IF SEED, THEN i["artists"]
-#             # We add trackName - artist.
-#             trackList.append(i["track"]["name"] + " - " + i["track"]["artists"][0]["name"]) # IF SEED, THEN i["name"]
-#         # In case there's more than one artist.
-#         else:
-#             nameString = ""
-#             # For each artist in the track.
-#             for index, b in enumerate(i["track"]["artists"]):
-#                 nameString += (b["name"])
-#                 # If it isn't the last artist.
-#                 if (i["track"]["artists"].__len__() - 1 != index):
-#                     nameString += ", "
-#             # Adding the track to the list.
-#             trackList.append(i["track"]["name"] + " - " + nameString)
-
-#     return trackList
-
 def searchYoutube(songName):
     songName += " Music Video"
     api = youtube.API(client_id=APIs["youtube"]["client_id"],
@@ -114,12 +91,6 @@ def searchYoutube(songName):
 if (__name__ == "__main__"):
     playlistURL = str(input("Insert Spotify playlist URL: "))
     # will have to fix this later idk how we will do the front end stuff with this
-    # if playlistURL != "":
-    #     tracks = getTracks(getResultsFromPlaylist(playlistURL))
-    # else:
-    #     seedType = str(input("Select \"genre\", \"artist\", or \"song\": "))
-    #     seed = str(input("Insert genre, artist, or song: "))
-    #     tracks = getTracks(getResultsFromSeed(seed, seedType))
     if playlistURL != "":
         tracks = getTracksFromPlaylist(playlistURL)
     else:
