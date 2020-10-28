@@ -1,10 +1,13 @@
 #coding: utf-8
 import json
+import flask
 # Spotify library.
 import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
 # Youtube stuff.
 import youtube
+
+app = flask.Flask(__name__)
 
 # Opening our JSON configuration file (which has our tokens).
 with open("config.json", encoding='utf-8-sig') as json_file:
@@ -88,22 +91,26 @@ def searchYoutube(songName):
     video = api.get('search', q=songName, maxResults=1, type='video', order='relevance')
     return("https://www.youtube.com/watch?v="+video["items"][0]["id"]["videoId"])
 
-if (__name__ == "__main__"):
-    playlistURL = str(input("Insert Spotify playlist URL: "))
-    # will have to fix this later idk how we will do the front end stuff with this
-    if playlistURL != "":
-        tracks = getTracksFromPlaylist(playlistURL)
-    else:
-        seedType = str(input("Select \"genre\" or \"artist\": "))
-        seed = str(input("Insert genre or artist: "))
-        tracks = getTracksFromSeed(seed, seedType)
+@app.route('/')
+def index():
+	return flask.render_template('web.html')
 
-    print("Searching songs...")
-    songs = []
-    for i in tracks:
-        songs.append(searchYoutube(i))
-    print("Search finished!")
+# if (__name__ == "__main__"):
+#     playlistURL = str(input("Insert Spotify playlist URL: "))
+#     # will have to fix this later idk how we will do the front end stuff with this
+#     if playlistURL != "":
+#         tracks = getTracksFromPlaylist(playlistURL)
+#     else:
+#         seedType = str(input("Select \"genre\" or \"artist\": "))
+#         seed = str(input("Insert genre or artist: "))
+#         tracks = getTracksFromSeed(seed, seedType)
 
-    print("URL LIST: ")
-    for i in songs:
-        print(i)
+#     print("Searching songs...")
+#     songs = []
+#     for i in tracks:
+#         songs.append(searchYoutube(i))
+#     print("Search finished!")
+
+    # print("URL LIST: ")
+    # for i in songs:
+    #     print(i)
