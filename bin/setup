@@ -16,7 +16,7 @@ set -u
 pip install -r requirements.txt
 
 # Export flask variable
-export FLASK_APP=insta485
+export FLASK_APP=spotifyToYoutube
 
 # Run app
 flask run
