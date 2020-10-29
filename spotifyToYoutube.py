@@ -20,13 +20,13 @@ def getTracksFromSeed(seed, seedType):
 
     if seedType == "genre":
         if seed in spotify.recommendation_genre_seeds()['genres']:
-            results = spotify.recommendations(seed_genres=[seed], limit=60)
+            results = spotify.recommendations(seed_genres=[seed], limit=1)
     elif seedType == "artist":
         search = spotify.search(q='artist:' + seed, type='artist')
         items = search['artists']['items']
         if len(items) > 0:
             artist = items[0]
-            results = spotify.recommendations(seed_artists=[artist['external_urls']['spotify']], limit=60)
+            results = spotify.recommendations(seed_artists=[artist['external_urls']['spotify']], limit=1)
     # elif seedType == "song":
     #     results = spotify.search(q='name:' + seed, type='track')
     #     items = results['tracks']['items']
@@ -91,9 +91,36 @@ def searchYoutube(songName):
     video = api.get('search', q=songName, maxResults=1, type='video', order='relevance')
     return("https://www.youtube.com/watch?v="+video["items"][0]["id"]["videoId"])
 
-@app.route('/')
+@app.route('/', methods=['POST', 'GET'])
 def index():
-	return flask.render_template('web.html')
+    context = {}
+    link = "dogs"
+    print("first")
+    if flask.request.method == 'POST':
+        print("post request made")
+        print(flask.request.form)
+        if flask.request.form['seed'] == "Artist":
+            print("artist seed")
+            artist = flask.request.form['search']
+            tracks = getTracksFromSeed(artist, "artist")
+            songs = []
+            for i in tracks:
+                songs.append(searchYoutube(i))
+            link = songs[0]
+            print(link)
+            return flask.render_template('web.html', link=link)
+        elif flask.request.form['seed'] == "Genre":
+            genre = flask.request.form['search']
+            tracks = getTracksFromSeed(genre, "genre")
+            songs = []
+            for i in tracks:
+                songs.append(searchYoutube(i))
+            link = songs[0]
+            print(link)
+            return flask.render_template('web.html', link=link)
+    print("link is: " + link)
+    link = "cats"
+    return flask.render_template('web.html', link=link)
 
 # if (__name__ == "__main__"):
 #     playlistURL = str(input("Insert Spotify playlist URL: "))

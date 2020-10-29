@@ -7,18 +7,41 @@
     </header>
 
     <script>
+        var seedString;
         function SelectQueryType(clicked_id){
             document.getElementsByClassName("chooseOne")[0].innerHTML = clicked_id;
-            
             document.getElementsByClassName("searchQuery")[0].disabled = false;
+            // var xhr = new XMLHttpRequest();
+            // xhr.open("POST", "/", true);
+            // xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            // xhr.send("seed=" + clicked_id);
+            seedString = "seed=" + clicked_id;
         }
 
         function SearchInput(){
             document.getElementById("power_hour").disabled = false;
+            // var xhr = new XMLHttpRequest();
+            // xhr.open("POST", "/", true);
+            // xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            // xhr.send("search=" + document.getElementById('search').value);
         }
 
         function MakePowerHour(){
-            document.getElementById("player").src = "https://www.youtube.com/embed/SC4xMk98Pdc";
+            var xhr = new XMLHttpRequest();
+            // xhr.onreadystatechange = function() {
+            //     if (this.readyState == 4 && this.status == 200) {
+            //         alert('{{ link }}')
+            //     }
+            // }
+            xhr.open("POST", "/", true);
+            xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xhr.send(seedString + "&search=" + document.getElementById('search').value);
+            alert("{{ link }}");
+            // document.getElementById("player").src = "https://www.youtube.com/watch?v=IZWtHsM3Y5A";
+            // xhr.onload = function(data) {
+            //     //document.getElementById("player").src = "https://www.youtube.com/watch?v=IZWtHsM3Y5A";
+            //     alert(data)
+            // }
         }
     </script>
 
@@ -39,16 +62,16 @@
             </div>
             <div class="searchbar">
                 <form>
-                    <input class="searchQuery" type="text" disabled oninput="SearchInput()">
+                    <input class="searchQuery" type="text" id="search" disabled oninput="SearchInput()">
                 </form>
             </div>
            
         </div>
         
         <div class="activate">
-            
                 <button id="power_hour" disabled onclick="MakePowerHour()">Make me a Power Hour!</button>
-           
+                <a id="link" value="{{ link }}">
+                <p> "{{ link }}" </p>
         </div>
 
         <div class="video" >
