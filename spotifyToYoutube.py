@@ -108,7 +108,6 @@ def index():
                 songs.append(searchYoutube(i))
             link = songs[0]
             print(link)
-            return flask.render_template('web.html', link=link)
         elif flask.request.form['seed'] == "Genre":
             genre = flask.request.form['search']
             tracks = getTracksFromSeed(genre, "genre")
@@ -117,9 +116,7 @@ def index():
                 songs.append(searchYoutube(i))
             link = songs[0]
             print(link)
-            return flask.render_template('web.html', link=link)
     print("link is: " + link)
-    link = "cats"
     return flask.render_template('web.html', link=link)
 
 # if (__name__ == "__main__"):
