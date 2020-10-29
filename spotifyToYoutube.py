@@ -20,13 +20,13 @@ def getTracksFromSeed(seed, seedType):
 
     if seedType == "genre":
         if seed in spotify.recommendation_genre_seeds()['genres']:
-            results = spotify.recommendations(seed_genres=[seed], limit=60)
+            results = spotify.recommendations(seed_genres=[seed], limit=1)
     elif seedType == "artist":
         search = spotify.search(q='artist:' + seed, type='artist')
         items = search['artists']['items']
         if len(items) > 0:
             artist = items[0]
-            results = spotify.recommendations(seed_artists=[artist['external_urls']['spotify']], limit=60)
+            results = spotify.recommendations(seed_artists=[artist['external_urls']['spotify']], limit=1)
     # elif seedType == "song":
     #     results = spotify.search(q='name:' + seed, type='track')
     #     items = results['tracks']['items']
@@ -89,28 +89,31 @@ def searchYoutube(songName):
               client_secret=APIs["youtube"]["client_secret"],
               api_key=APIs["youtube"]["api_key"])
     video = api.get('search', q=songName, maxResults=1, type='video', order='relevance')
-    return("https://www.youtube.com/watch?v="+video["items"][0]["id"]["videoId"])
+    # "https://www.youtube.com/embed/?playsinline=1&fs=1&controls=0&enablejsapi=1&origin=https%3A%2F%2Fwww.powerhourproject.com&widgetid=1"
+    return("https://www.youtube.com/embed/"+video["items"][0]["id"]["videoId"])
 
-@app.route('/')
+@app.route('/get-link', methods=['POST', 'GET'])
+def getLink():
+    context = {}
+    link = ""
+    if flask.request.method == 'POST':
+        data = flask.request.get_json()
+        if data['seed'] == "Artist":
+            artist = data['search']
+            tracks = getTracksFromSeed(artist, "artist")
+            songs = []
+            for i in tracks:
+                songs.append(searchYoutube(i))
+            link = songs[0]
+        elif data['seed'] == "Genre":
+            genre = data['search']
+            tracks = getTracksFromSeed(genre, "genre")
+            songs = []
+            for i in tracks:
+                songs.append(searchYoutube(i))
+            link = songs[0]
+    return flask.make_response(flask.jsonify({"link": link}))
+
+@app.route('/', methods=['POST', 'GET'])
 def index():
-	return flask.render_template('web.html')
-
-# if (__name__ == "__main__"):
-#     playlistURL = str(input("Insert Spotify playlist URL: "))
-#     # will have to fix this later idk how we will do the front end stuff with this
-#     if playlistURL != "":
-#         tracks = getTracksFromPlaylist(playlistURL)
-#     else:
-#         seedType = str(input("Select \"genre\" or \"artist\": "))
-#         seed = str(input("Insert genre or artist: "))
-#         tracks = getTracksFromSeed(seed, seedType)
-
-#     print("Searching songs...")
-#     songs = []
-#     for i in tracks:
-#         songs.append(searchYoutube(i))
-#     print("Search finished!")
-
-    # print("URL LIST: ")
-    # for i in songs:
-    #     print(i)
+    return flask.render_template('web.html')

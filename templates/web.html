@@ -7,18 +7,34 @@
     </header>
 
     <script>
+        var seedString;
         function SelectQueryType(clicked_id){
             document.getElementsByClassName("chooseOne")[0].innerHTML = clicked_id;
-            
             document.getElementsByClassName("searchQuery")[0].disabled = false;
+            seedString = clicked_id;
         }
 
         function SearchInput(){
             document.getElementById("power_hour").disabled = false;
         }
 
-        function MakePowerHour(){
-            document.getElementById("player").src = "https://www.youtube.com/embed/SC4xMk98Pdc";
+        function MakePowerHour() {
+            fetch("/get-link", {
+                method: "POST",
+                headers: new Headers({
+                    "content-type": "application/json"
+                }),
+                body: JSON.stringify({
+                    "seed": seedString,
+                    "search": document.getElementById('search').value,
+                })
+            })
+            .then(function(response) {
+                console.log(response);
+                response.json().then(function(data) {
+                    document.getElementById("player").src = data['link'];
+                });
+            });
         }
     </script>
 
@@ -39,16 +55,14 @@
             </div>
             <div class="searchbar">
                 <form>
-                    <input class="searchQuery" type="text" disabled oninput="SearchInput()">
+                    <input class="searchQuery" type="text" id="search" disabled oninput="SearchInput()">
                 </form>
             </div>
            
         </div>
         
         <div class="activate">
-            
                 <button id="power_hour" disabled onclick="MakePowerHour()">Make me a Power Hour!</button>
-           
         </div>
 
         <div class="video" >
