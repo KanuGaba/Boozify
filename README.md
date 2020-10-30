@@ -6,3 +6,8 @@ A web app that automatically generates a Power Hour mix for partying college stu
 ./bin/setup
 source env/bin/activate
 ```
+
+### Run App
+```bash
+./bin/run
+```

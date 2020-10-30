@@ -1,0 +1,7 @@
+#!/bin/bash
+
+# Export flask variable
+export FLASK_APP=spotifyToYoutube.py
+
+# Run app
+flask run
