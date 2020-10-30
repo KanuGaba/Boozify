@@ -112,6 +112,13 @@ def getLink():
             for i in tracks:
                 songs.append(searchYoutube(i))
             link = songs[0]
+        elif data['seed'] == "Playlist":
+            playlistURL = data['search']
+            tracks = getTracksFromPlaylist(playlistURL)
+            songs = []
+            # for i in tracks:
+            #     songs.append(searchYoutube(i))
+            link = searchYoutube(tracks[0])
     return flask.make_response(flask.jsonify({"link": link}))
 
 @app.route('/', methods=['POST', 'GET'])
