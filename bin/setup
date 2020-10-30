@@ -14,9 +14,3 @@ set -u
 
 # Install other dependencies
 pip install -r requirements.txt
-
-# Export flask variable
-export FLASK_APP=spotifyToYoutube
-
-# Run app
-flask run

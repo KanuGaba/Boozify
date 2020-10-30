@@ -1,13 +1,14 @@
 <!DOCTYPE html>
 <html>
     <header>
-        <title> Boozify </title>
+        <title>Boozify</title>
         <link rel="icon" type="image/png" href="/static/images/favicon.png">
         <link rel="stylesheet" href="/static/css/web.css">
     </header>
 
     <script>
         var seedString;
+
         function SelectQueryType(clicked_id){
             document.getElementsByClassName("chooseOne")[0].innerHTML = clicked_id;
             document.getElementsByClassName("searchQuery")[0].disabled = false;
@@ -38,8 +39,6 @@
         }
     </script>
 
-
-
     <body style="background-color:darkslategrey">
         <div class="logo">
             <img class="boozify_logo" src="/static/images/logo2.png" width="400">
@@ -52,27 +51,22 @@
                     <a id="Genre" href="#" onclick="SelectQueryType(this.id)">Genre</a>
                     <a id="Playlist" href="#" onclick="SelectQueryType(this.id)">Playlist</a>
                 </div>
-                
             </div>
             <div class="searchbar">
                 <form>
                     <input class="searchQuery" type="text" id="search" disabled oninput="SearchInput()">
                 </form>
             </div>
-           
         </div>
-        
         <div class="activate">
                 <button id="power_hour" disabled onclick="MakePowerHour()">Make me a Power Hour!</button>
         </div>
-
-        <div class="video" >
+        <div class="video">
             <iframe 
-            id="player"
-            src="" frameborder="0" gesture="media"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
-        </iframe>
+                id="player"
+                src="" frameborder="0" gesture="media"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
+            </iframe>
         </div>
     </body>
 </html>
-<!---->
