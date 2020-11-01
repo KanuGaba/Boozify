@@ -90,36 +90,33 @@ def searchYoutube(songName):
               api_key=APIs["youtube"]["api_key"])
     video = api.get('search', q=songName, maxResults=1, type='video', order='relevance')
     # "https://www.youtube.com/embed/?playsinline=1&fs=1&controls=0&enablejsapi=1&origin=https%3A%2F%2Fwww.powerhourproject.com&widgetid=1"
-    return("https://www.youtube.com/embed/"+video["items"][0]["id"]["videoId"])
+    # return("https://www.youtube.com/embed/"+video["items"][0]["id"]["videoId"])
+    return video["items"][0]["id"]["videoId"]
 
 @application.route('/get-link', methods=['POST', 'GET'])
 def getLink():
     context = {}
+    songs = []
     link = ""
     if flask.request.method == 'POST':
         data = flask.request.get_json()
         if data['seed'] == "Artist":
             artist = data['search']
             tracks = getTracksFromSeed(artist, "artist")
-            songs = []
             for i in tracks:
                 songs.append(searchYoutube(i))
-            link = songs[0]
         elif data['seed'] == "Genre":
             genre = data['search']
             tracks = getTracksFromSeed(genre, "genre")
-            songs = []
             for i in tracks:
                 songs.append(searchYoutube(i))
-            link = songs[0]
         elif data['seed'] == "Playlist":
             playlistURL = data['search']
             tracks = getTracksFromPlaylist(playlistURL)
-            songs = []
-            # for i in tracks:
-            #     songs.applicationend(searchYoutube(i))
-            link = searchYoutube(tracks[0])
-    return flask.make_response(flask.jsonify({"link": link}))
+            for i in tracks:
+                songs.append(searchYoutube(i))
+            
+    return flask.make_response(flask.jsonify({"ids": songs}))
 
 @application.route('/', methods=['POST', 'GET'])
 def index():
