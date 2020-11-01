@@ -1,0 +1,16 @@
+branch-defaults:
+  main:
+    environment: null
+    group_suffix: null
+global:
+  application_name: Boozify
+  branch: main
+  default_platform: Python 3.7 running on 64bit Amazon Linux 2
+  default_region: us-east-2
+  instance_profile: null
+  platform_name: null
+  platform_version: null
+  profile: eb-cli
+  repository: origin
+  sc: git
+  workspace_type: Application

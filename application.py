@@ -7,14 +7,14 @@ from spotipy.oauth2 import SpotifyClientCredentials
 # Youtube stuff.
 import youtube
 
-app = flask.Flask(__name__)
+application = flask.Flask(__name__)
 
 # Opening our JSON configuration file (which has our tokens).
 with open("config.json", encoding='utf-8-sig') as json_file:
     APIs = json.load(json_file)
 
 def getTracksFromSeed(seed, seedType):
-    # Creating and authenticating our Spotify app.
+    # Creating and authenticating our Spotify applicationlication.
     client_credentials_manager = SpotifyClientCredentials(APIs["spotify"]["client_id"], APIs["spotify"]["client_secret"])
     spotify = spotipy.Spotify(client_credentials_manager=client_credentials_manager)
 
@@ -39,7 +39,7 @@ def getTracksFromSeed(seed, seedType):
         # In case there's only one artist.
         if (i["artists"].__len__() == 1):
             # We add trackName - artist.
-            trackList.append(i["name"] + " - " + i["artists"][0]["name"])
+            trackList.applicationend(i["name"] + " - " + i["artists"][0]["name"])
         # In case there's more than one artist.
         else:
             nameString = ""
@@ -50,12 +50,12 @@ def getTracksFromSeed(seed, seedType):
                 if (i["artists"].__len__() - 1 != index):
                     nameString += ", "
             # Adding the track to the list.
-            trackList.append(i["name"] + " - " + nameString)
+            trackList.applicationend(i["name"] + " - " + nameString)
 
     return trackList
 
 def getTracksFromPlaylist(playlistURL):
-    # Creating and authenticating our Spotify app.
+    # Creating and authenticating our Spotify application.
     client_credentials_manager = SpotifyClientCredentials(APIs["spotify"]["client_id"], APIs["spotify"]["client_secret"])
     spotify = spotipy.Spotify(client_credentials_manager=client_credentials_manager)
 
@@ -68,7 +68,7 @@ def getTracksFromPlaylist(playlistURL):
         # In case there's only one artist.
         if (i["track"]["artists"].__len__() == 1):
             # We add trackName - artist.
-            trackList.append(i["track"]["name"] + " - " + i["track"]["artists"][0]["name"])
+            trackList.applicationend(i["track"]["name"] + " - " + i["track"]["artists"][0]["name"])
         # In case there's more than one artist.
         else:
             nameString = ""
@@ -79,7 +79,7 @@ def getTracksFromPlaylist(playlistURL):
                 if (i["track"]["artists"].__len__() - 1 != index):
                     nameString += ", "
             # Adding the track to the list.
-            trackList.append(i["track"]["name"] + " - " + nameString)
+            trackList.applicationend(i["track"]["name"] + " - " + nameString)
 
     return trackList
 
@@ -92,7 +92,7 @@ def searchYoutube(songName):
     # "https://www.youtube.com/embed/?playsinline=1&fs=1&controls=0&enablejsapi=1&origin=https%3A%2F%2Fwww.powerhourproject.com&widgetid=1"
     return("https://www.youtube.com/embed/"+video["items"][0]["id"]["videoId"])
 
-@app.route('/get-link', methods=['POST', 'GET'])
+@application.route('/get-link', methods=['POST', 'GET'])
 def getLink():
     context = {}
     link = ""
@@ -103,24 +103,24 @@ def getLink():
             tracks = getTracksFromSeed(artist, "artist")
             songs = []
             for i in tracks:
-                songs.append(searchYoutube(i))
+                songs.applicationend(searchYoutube(i))
             link = songs[0]
         elif data['seed'] == "Genre":
             genre = data['search']
             tracks = getTracksFromSeed(genre, "genre")
             songs = []
             for i in tracks:
-                songs.append(searchYoutube(i))
+                songs.applicationend(searchYoutube(i))
             link = songs[0]
         elif data['seed'] == "Playlist":
             playlistURL = data['search']
             tracks = getTracksFromPlaylist(playlistURL)
             songs = []
             # for i in tracks:
-            #     songs.append(searchYoutube(i))
+            #     songs.applicationend(searchYoutube(i))
             link = searchYoutube(tracks[0])
     return flask.make_response(flask.jsonify({"link": link}))
 
-@app.route('/', methods=['POST', 'GET'])
+@application.route('/', methods=['POST', 'GET'])
 def index():
     return flask.render_template('web.html')
