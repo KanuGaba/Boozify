@@ -2,8 +2,8 @@
 <html>
     <header>
         <title>Boozify</title>
-        <link rel="icon" type="image/png" href="/static/images/favicon.png">
-        <link rel="stylesheet" href="/static/css/web.css">
+        <link rel="icon" type="image/png" src="../static/images/favicon.png">
+        <link rel="stylesheet" href="../static/css/web.css">
     </header>
     <script src="https://www.youtube.com/iframe_api"></script>
     <script >
@@ -11,7 +11,7 @@
 
         var player;
         var start = 0;
-        var end = start + 60;
+        var end = start + 10;
       function onYouTubeIframeAPIReady() {
           console.log("hello world");
           /*
@@ -37,17 +37,23 @@
       }
 
       // 4. The API will call this function when the video player is ready.
-      function onPlayerReady(event) {
-        event.target.playVideo();
-      }
+      //function onPlayerReady(event) {
+        //event.target.playVideo();
+      //}
 
       // 5. The API calls this function when the player's state changes.
       //    The function indicates that when playing a video (state=1),
       //    the player should play for six seconds and then stop.
-      var done = false;
+      //var done = false;
       //var id;
       var id_list = new Array();
+      id_list.push("smqNtBXN5Mc");
+      id_list.push("1KGCAffvGIw");
+      id_list.push("ZAxRozTgoXM");
       var song_num = 0;
+      var wait = false;
+      var event_trigger = 1;
+      var first_played = false;
       function onPlayerStateChange(event) {
        // if (event.data == YT.PlayerState.PLAYING && !done) {
          // setTimeout(stopVideo, 6000);
@@ -55,10 +61,39 @@
         //}
         //check if there are more videos in the list
         //if there are then move to the next one
-        if (event.data == YT.PlayerState.ENDED){
+       // if (event.data == YT.PlayerState.)
+       if (event.data != YT.PlayerState.PLAYING && first_played){
+            console.log("beer image");
+        }
+        console.log("player state: ", event.data);
+        if (event.data == YT.PlayerState.PLAYING && first_played == false){
+            first_played = true;
+        }
+
+        if (event.data == YT.PlayerState.ENDED && wait == false){
+            if (event_trigger == 0){
+              event_trigger = 1;
+              console.log("double fire");
+              return;
+          }
+          else {
+              console.log(id_list.length, " big boy");
+              console.log("first fire");
+              event_trigger = 0;
+          }
+           // wait = true;
+            if (song_num >= id_list.length) {
+                console.log("end player");
+                console.log(song_num);
+                player.destroy();
+            }
             //loads and plays next video
             //player.loadVideoById(id);
-            player.loadVideoById({videoId:id_list[song_num], endSeconds:60});
+            console.log("player ended");
+            player.loadVideoById({videoId:id_list[song_num], endSeconds:10});
+            song_num += 1;
+            console.log(song_num);
+            wait = false;
             //player.cueVideoById(videoId:id, startSeconds:0, endSeconds:Number)
         }
       }
@@ -78,6 +113,7 @@
         }
         
         function MakePowerHour() {
+            /*
             fetch("/get-link", {
                 method: "POST",
                 headers: new Headers({
@@ -95,13 +131,14 @@
                     for (song_id  of data.ids) {
                         console.log(song_id);
                         id_list.push(song_id);
-                    }
+                    }*/
                     if (id_list.length > 0) {
                         console.log(id_list);
+                        
                         player = new YT.Player('player', {
-                            height: '390',
-                            width: '640',
-                            videoId: id_list[song_num],
+                            height: '100%',
+                            width: '100%',
+                            videoId: id_list[0],
                             // videoId: 'M7lc1UVf-VE',
                             playerVars: {
                                 start: start,
@@ -111,19 +148,28 @@
                                 fs: 1
                             },
                             events: {
-                                'onReady': onPlayerReady,
+                                //'onReady': onPlayerReady,
                                 'onStateChange': onPlayerStateChange
                             }
                         });
-                        //player.cueVideoById({videoId:id_list[song_num], endSeconds:60, "medium"});
                         song_num += 1;
+                        //player.cueVideoById({videoId:id_list[song_num], endSeconds:60, "medium"});
+                        
+                        //document.getElementById("player").style.display = "flex";
+                       // document.getElementById("deactivate").disabled = false;
                     }
                     //document.getElementById("player").src = data['link'];
-                });
-            })
-            .catch(console.error);
+               // });
+            //})
+            //.catch(console.error);
             //if id_list is not empty then load the youtube player
             
+        }
+        function DestroyPowerHour() {
+           // document.getElementById("deactivate").disabled = true;
+            player.destroy();
+            id_list = new Array();
+            song_num = 0;
         }
     </script>
 
@@ -149,9 +195,20 @@
         <div class="activate">
                 <button id="power_hour" disabled onclick="MakePowerHour()">Make me a Power Hour!</button>
         </div>
-        <div id="player"></div>
+        <div class="video">
+            
+            <div id="player"></div>
+
+        </div>
+        
+       
+
         <script>
             /*
+            <img class="beer" src="/static/images/beer.jpg" disabled>
+             <div class="deactivate">
+            <button id="end_power_hour" disabled onclick="DestroyPowerHour()">Destroy Power Hour/retry power hour</button>
+        </div>
             <div class="video">
                 <iframe 
                     id="player"
