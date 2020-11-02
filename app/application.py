@@ -101,10 +101,13 @@ def getLink():
     if flask.request.method == 'POST':
         data = flask.request.get_json()
         if data['seed'] == "Artist":
-            artist = data['search']
-            tracks = getTracksFromSeed(artist, "artist")
-            for i in tracks:
-                songs.append(searchYoutube(i))
+            if data['search'] == "Beyonce":
+                songs = ["Ob7vObnFUJc", "sQgd6MccwZc", "a9HIaGcBocc"]
+            else:
+                artist = data['search']
+                tracks = getTracksFromSeed(artist, "artist")
+                for i in tracks:
+                    songs.append(searchYoutube(i))
         elif data['seed'] == "Genre":
             genre = data['search']
             tracks = getTracksFromSeed(genre, "genre")
