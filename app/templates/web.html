@@ -11,57 +11,21 @@
 
         var player;
         var start = 0;
-        var end = start + 10;
+        var end = start + 30;
       function onYouTubeIframeAPIReady() {
-          console.log("hello world");
-          /*
-        player = new YT.Player('player', {
-          height: '390',
-          width: '640',
-         // videoId: 'M7lc1UVf-VE',
-          playerVars: {
-              autoplay: 1,
-              start: start,
-              end: end,
-              controls: 0,
-              disablekb: 1,
-              fs: 1
-          },
-          events: {
-            'onReady': onPlayerReady,
-            'onStateChange': onPlayerStateChange
-          }
-        });
-        */
-       // document.getElementById("player").style
+          console.log("youtube api installed");
       }
 
-      // 4. The API will call this function when the video player is ready.
-      //function onPlayerReady(event) {
-        //event.target.playVideo();
-      //}
-
-      // 5. The API calls this function when the player's state changes.
-      //    The function indicates that when playing a video (state=1),
-      //    the player should play for six seconds and then stop.
-      //var done = false;
-      //var id;
       var id_list = new Array();
       id_list.push("smqNtBXN5Mc");
       id_list.push("1KGCAffvGIw");
       id_list.push("ZAxRozTgoXM");
       var song_num = 0;
-      var wait = false;
       var event_trigger = 1;
       var first_played = false;
+      var lastSong;
       function onPlayerStateChange(event) {
-       // if (event.data == YT.PlayerState.PLAYING && !done) {
-         // setTimeout(stopVideo, 6000);
-          //done = true;
-        //}
-        //check if there are more videos in the list
-        //if there are then move to the next one
-       // if (event.data == YT.PlayerState.)
+
        if (event.data != YT.PlayerState.PLAYING && first_played){
             console.log("beer image");
         }
@@ -70,31 +34,35 @@
             first_played = true;
         }
 
-        if (event.data == YT.PlayerState.ENDED && wait == false){
+        if (event.data == YT.PlayerState.ENDED){
             if (event_trigger == 0){
               event_trigger = 1;
               console.log("double fire");
               return;
-          }
-          else {
+            }
+            else {
               console.log(id_list.length, " big boy");
               console.log("first fire");
               event_trigger = 0;
-          }
-           // wait = true;
+            }
+            //if (player.videoId == lastSong){
+              //console.log("we outtie");
+              //console.log(lastSong);
+              //player.destroy();
+            //}
             if (song_num >= id_list.length) {
-                console.log("end player");
-                console.log(song_num);
+              //  console.log("end player");
+                //console.log(song_num);
+                song_num = 0;
                 player.destroy();
             }
             //loads and plays next video
             //player.loadVideoById(id);
             console.log("player ended");
-            player.loadVideoById({videoId:id_list[song_num], endSeconds:10});
+            player.loadVideoById({videoId:id_list[song_num], endSeconds:30});
             song_num += 1;
             console.log(song_num);
-            wait = false;
-            //player.cueVideoById(videoId:id, startSeconds:0, endSeconds:Number)
+           
         }
       }
       function stopVideo() {
@@ -131,9 +99,13 @@
                     for (song_id  of data.ids) {
                         console.log(song_id);
                         id_list.push(song_id);
-                    }*/
+                    }
+                    
+                    */
+                  
                     if (id_list.length > 0) {
-                        console.log(id_list);
+                        lastSong = id_list[id_list.length - 1];
+                        console.log(lastSong);
                         
                         player = new YT.Player('player', {
                             height: '100%',
