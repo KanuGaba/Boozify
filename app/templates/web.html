@@ -11,7 +11,7 @@
 
         var player;
         var start = 0;
-        var end = start + 15;
+        var end = start + 60;
       function onYouTubeIframeAPIReady() {
           console.log("youtube api installed");
       }
@@ -60,7 +60,7 @@
             //loads and plays next video
             //player.loadVideoById(id);
             console.log("player ended");
-            player.loadVideoById({videoId:id_list[song_num], endSeconds:15});
+            player.loadVideoById({videoId:id_list[song_num], endSeconds:60});
             song_num += 1;
             console.log(song_num);
            
