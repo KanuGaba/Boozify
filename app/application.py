@@ -21,13 +21,13 @@ def getTracksFromSeed(seed, seedType):
 
     if seedType == "genre":
         if seed in spotify.recommendation_genre_seeds()['genres']:
-            results = spotify.recommendations(seed_genres=[seed], limit=3)
+            results = spotify.recommendations(seed_genres=[seed], limit=10)
     elif seedType == "artist":
         search = spotify.search(q='artist:' + seed, type='artist')
         items = search['artists']['items']
         if len(items) > 0:
             artist = items[0]
-            results = spotify.recommendations(seed_artists=[artist['external_urls']['spotify']], limit=3)
+            results = spotify.recommendations(seed_artists=[artist['external_urls']['spotify']], limit=10)
     # elif seedType == "song":
     #     results = spotify.search(q='name:' + seed, type='track')
     #     items = results['tracks']['items']
