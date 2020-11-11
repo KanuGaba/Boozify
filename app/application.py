@@ -6,6 +6,7 @@ import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
 # Youtube stuff.
 import youtube
+from youtube_search import YoutubeSearch
 
 application = flask.Flask(__name__)
 
@@ -85,13 +86,13 @@ def getTracksFromPlaylist(playlistURL):
 
 def searchYoutube(songName):
     songName += " Music Video"
-    api = youtube.API(client_id=APIs["youtube"]["client_id"],
-              client_secret=APIs["youtube"]["client_secret"],
-              api_key=APIs["youtube"]["api_key"])
-    video = api.get('search', q=songName, maxResults=1, type='video', order='relevance')
-    # "https://www.youtube.com/embed/?playsinline=1&fs=1&controls=0&enablejsapi=1&origin=https%3A%2F%2Fwww.powerhourproject.com&widgetid=1"
-    # return("https://www.youtube.com/embed/"+video["items"][0]["id"]["videoId"])
-    return video["items"][0]["id"]["videoId"]
+    #api = youtube.API(client_id=APIs["youtube"]["client_id"],
+              #client_secret=APIs["youtube"]["client_secret"],
+              #api_key=APIs["youtube"]["api_key"])
+    #video = api.get('search', q=songName, maxResults=1, type='video', order='relevance')
+    video = YoutubeSearch(songName, max_results=1).to_dict()
+    #return video["items"][0]["id"]["videoId"]
+    return video[0]["id"]
 
 @application.route('/get-link', methods=['POST', 'GET'])
 def getLink():
