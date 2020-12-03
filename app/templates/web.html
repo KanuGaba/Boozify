@@ -7,69 +7,6 @@
     </header>
     <script src="https://www.youtube.com/iframe_api"></script>
     <script >
-        var seedString;
-
-        var player;
-        var start = 0;
-        var end = start + 60;
-      function onYouTubeIframeAPIReady() {
-          console.log("youtube api installed");
-      }
-
-      var id_list = new Array();
-      //id_list.push("smqNtBXN5Mc");
-      //id_list.push("1KGCAffvGIw");
-      //id_list.push("ZAxRozTgoXM");
-      var song_num = 0;
-      var event_trigger = 1;
-      var first_played = false;
-      var lastSong;
-      function onPlayerStateChange(event) {
-
-       if (event.data != YT.PlayerState.PLAYING && first_played){
-            console.log("beer image");
-        }
-        console.log("player state: ", event.data);
-        if (event.data == YT.PlayerState.PLAYING && first_played == false){
-            first_played = true;
-        }
-
-        if (event.data == YT.PlayerState.ENDED){
-            if (event_trigger == 0){
-              event_trigger = 1;
-              console.log("double fire");
-              return;
-            }
-            else {
-              console.log(id_list.length, " big boy");
-              console.log("first fire");
-              event_trigger = 0;
-            }
-            //if (player.videoId == lastSong){
-              //console.log("we outtie");
-              //console.log(lastSong);
-              //player.destroy();
-            //}
-            if (song_num >= id_list.length) {
-              //  console.log("end player");
-                //console.log(song_num);
-                song_num = 0;
-                id_list = new Array();
-                player.destroy();
-            }
-            //loads and plays next video
-            //player.loadVideoById(id);
-            console.log("player ended");
-            player.loadVideoById({videoId:id_list[song_num], endSeconds:60});
-            song_num += 1;
-            console.log(song_num);
-           
-        }
-      }
-      function stopVideo() {
-        player.stopVideo();
-      }
-
 
         function SelectQueryType(clicked_id){
             document.getElementsByClassName("chooseOne")[0].innerHTML = clicked_id;
@@ -80,9 +17,10 @@
         function SearchInput(){
             document.getElementById("power_hour").disabled = false;
         }
-        
         function MakePowerHour() {
-            
+            var id_list = new Array();
+            var song_list = new Array();
+            var success = false;
             fetch("/get-link", {
                 method: "POST",
                 headers: new Headers({
@@ -96,51 +34,75 @@
             .then(function(response) {
                 console.log(response);
                 response.json().then( data => {//function(data) {
+                    console.log("list data");
                     console.log(data);
-                    for (song_id  of data.ids) {
+                    console.log("end data list")
+                    for (song_id  of data[0].ids) {
                         console.log(song_id);
-                        id_list.push(song_id);
-                    }                
+                        //id_list.push(song_id);
+                    }               
+                    /* For debugging i am caching a list */ 
+                    for(var i = 0; i < 12; i ++){
+                        id_list.push("oa7JRuLEp-w");
+                        song_list.push("Tessellate - Tokyo Police Club");
+                        //https://www.youtube.com/watch?v=oa7JRuLEp-w
+                        id_list.push("ZAxRozTgoXM");
+                        song_list.push("Wait Up - Tokyo Police Club");
+                        id_list.push("smqNtBXN5Mc");
+                        song_list.push("Bambi - Tokyo Police Club");
+
+                        id_list.push("1KGCAffvGIw");
+                        song_list.push("Your English is Good - Tokyo Police Club");
+
+                        id_list.push("4MG6rKuCfyo");
+                        song_list.push("Argentina - Tokyo Police Club");
+
+                    }
+                   /* DEBUG */
+                   //var i = 1;
+                    //for (song_name of data[1].names){
+                        //var new_songname = song_name.replace("-", "by")
+                       // song_list.push(i + ". " + new_songname);
+                       //i++;
+                    //}
+                    
+                    console.log(song_list);
                     if (id_list.length > 0) {
-                        lastSong = id_list[id_list.length - 1];
-                        console.log(lastSong);
-                        
-                        player = new YT.Player('player', {
-                            height: '100%',
-                            width: '100%',
-                            videoId: id_list[0],
-                            // videoId: 'M7lc1UVf-VE',
-                            playerVars: {
-                                start: start,
-                                end: end,
-                                controls: 0,
-                                disablekb: 1,
-                                fs: 1
-                            },
-                            events: {
-                                //'onReady': onPlayerReady,
-                                'onStateChange': onPlayerStateChange
-                            }
-                        });
-                        song_num += 1;
+                      
                         //player.cueVideoById({videoId:id_list[song_num], endSeconds:60, "medium"});
-                        
+                        var success = true;
                         //document.getElementById("player").style.display = "flex";
                        // document.getElementById("deactivate").disabled = false;
+                       //now move to new page with power hour
+                        
+                        sessionStorage.setItem("id_list", JSON.stringify(id_list));
+                        sessionStorage.setItem("song_list", JSON.stringify(song_list));
+                        window.location = '/powerhour';
+                    }else{
+                        throw "Search results empty";
                     }
                     //document.getElementById("player").src = data['link'];
                 });
             })
-            .catch(console.error);
-            //if id_list is not empty then load the youtube player
+            .catch(window.alert(error));
+           
             
         }
-        function DestroyPowerHour() {
-           // document.getElementById("deactivate").disabled = true;
-            player.destroy();
-            id_list = new Array();
-            song_num = 0;
+        /*
+        function Move(){
+            var seedString = document.getElementsByClassName("chooseOne")[0].innerHTML;
+            //assert that value is not empty
+            var searchQuery = document.getElementById("search").value;
+            if (searchQuery == ""){
+                alert("Please Enter a valid " + seedString + " in the search bar");
+            }
+            else{
+                sessionStorage.setItem("seedString", seedString);
+                sessionStorage.setItem("searchQuery", searchQuery);
+            }
+            window.location = '/powerhour';
         }
+        */
     </script>
 
     <body style="background-color:darkslategrey">
@@ -165,28 +127,6 @@
         <div class="activate">
                 <button id="power_hour" disabled onclick="MakePowerHour()">Make me a Power Hour!</button>
         </div>
-        <div class="video">
-            
-            <div id="player"></div>
-
-        </div>
-        
-       
-
-        <script>
-            /*
-            <img class="beer" src="/static/images/beer.jpg" disabled>
-             <div class="deactivate">
-            <button id="end_power_hour" disabled onclick="DestroyPowerHour()">Destroy Power Hour/retry power hour</button>
-        </div>
-            <div class="video">
-                <iframe 
-                    id="player"
-                    src="" frameborder="0" gesture="media"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
-                </iframe>
-            </div>
-            */
-        </script>
+    
     </body>
 </html>
