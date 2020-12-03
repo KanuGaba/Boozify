@@ -145,6 +145,7 @@ function MakePowerHour() {
                 var song_name = track;
                 var new_songname = song_name.replace("-", "by")
                 song_list.push(song_num + ". " + new_songname);
+                song_num++;
                 promises.push(
                     fetch("/get-video-id", {
                         method: "POST",
@@ -156,6 +157,8 @@ function MakePowerHour() {
                         })
                     })
                     .then((response) => {
+                        console.log(response);
+                        console.log(response.json());
                         return response.json();
                     })
                     .then(function(data) {
@@ -177,7 +180,7 @@ function MakePowerHour() {
                     document.getElementById("loading_label").setAttribute("hidden", true);
                     document.getElementById("loading").setAttribute("hidden", true); 
                     
-                    //now move to new page with power hour
+                    //now move to new page with power hourg
                     
                     sessionStorage.setItem("id_list", JSON.stringify(id_list));
                     sessionStorage.setItem("song_list", JSON.stringify(song_list));
