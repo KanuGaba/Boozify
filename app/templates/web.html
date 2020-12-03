@@ -4,25 +4,11 @@
         <title>Boozify</title>
         <link rel="icon" type="image/png" src="../static/images/favicon.png">
         <link rel="stylesheet" href="../static/css/web.css">
+        <script src="https://www.youtube.com/iframe_api"></script>
+        <script src="../static/js/main.js"></script>
     </header>
     <script src="https://www.youtube.com/iframe_api"></script>
     <script src="../static/js/main.js">
-
-        /*
-        function Move(){
-            var seedString = document.getElementsByClassName("chooseOne")[0].innerHTML;
-            //assert that value is not empty
-            var searchQuery = document.getElementById("search").value;
-            if (searchQuery == ""){
-                alert("Please Enter a valid " + seedString + " in the search bar");
-            }
-            else{
-                sessionStorage.setItem("seedString", seedString);
-                sessionStorage.setItem("searchQuery", searchQuery);
-            }
-            window.location = '/powerhour';
-        }
-        */
     </script>
 
     <body style="background-color:darkslategrey">
@@ -39,17 +25,23 @@
                 </div>
             </div>
             <div class="searchbar">
-                <form>
+                <form onsubmit="MakePowerHour()">
                     <input class="searchQuery" type="text" id="search" disabled oninput="SearchInput()">
                 </form>
             </div>
         </div>
         <div class="activate">
-                <button id="power_hour" disabled onclick="MakePowerHour()">Make me a Power Hour!</button>
+            <button id="power_hour" disabled onclick="MakePowerHour()">Make me a Power Hour!</button>
         </div>
         <div class="progressbar">
             <label hidden id="loading_label" for="generating">Generating Power Hour: &nbsp;</label>
             <progress hidden id="loading" value="0" max="60"> 0% </progress>
+        </div>
+
+        <div class="progressbar">
+            <label hidden id="loading_label" for="generating">Generating Power Hour: &nbsp;</label>
+            <progress hidden id="loading" value="0" max="60"> 0% </progress>
+
         </div>
     </body>
 </html>
