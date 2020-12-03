@@ -35,8 +35,9 @@
                     for (track of data.tracks) {
                         var trackCount = 1;
                         var song_name = track;
-                        var new_songname = song_name.replace("-", "by")
+                        var new_songname = song_name.replace("-", "by");
                         song_list.push(song_num + ". " + new_songname);
+                        ++song_num;
                         promises.push(
                             fetch("/get-video-id", {
                                 method: "POST",

@@ -107,7 +107,7 @@ def getTracksFromPlaylist(playlistURL):
             if song_limit == 0:
                 break
 
-            print("Attempt Left {}".format(attempts - 1))
+            #print("Attempt Left {}".format(attempts - 1))
 
             # Spotify API to find search results
             search = spotify.search(q='artist:' + artist, type='artist')
@@ -167,7 +167,7 @@ def getTracks():
     # Convert set to list and randomize
     trackList = list(tracks)
     random.shuffle(trackList)
-    print(trackList)
+    #print(trackList)
 
     return flask.make_response(flask.jsonify({"tracks": trackList}))
 
@@ -178,6 +178,7 @@ def getVideoID():
     if flask.request.method == 'POST':
         data = flask.request.get_json()
         video_id = searchYoutube(data['track'])
+        print(data)
 
     return flask.make_response(flask.jsonify({"video_id": video_id}))
 
