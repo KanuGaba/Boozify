@@ -48,7 +48,18 @@
       var first_played = false;
       var lastSong;
       var drink_img_displayed = false;
+
+      //check if the 
+      async function videoCheck(event){
+          var time = 0;
+        for (var i = 0; i < 1000; i ++){
+            setTimeout(function(){ time++;}, 10);
+        }
+      }
+
+
       function onPlayerStateChange(event) {
+          console.log(event);
           console.log("song_num: " + song_num + " id list len:" + id_list.length);
         if (event.data == -1){
             console.log(player);
