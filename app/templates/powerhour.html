@@ -11,8 +11,8 @@
 
         var player;
         var start = 0;
-        var end = start + 10;
-
+        var end = start + 60;
+        var playerData;
       //function animateList(){
       //  for(var i = 1; i < 11; i++){
         //    document.getElementById("song"+i).style.opacity = 1;
@@ -28,6 +28,10 @@
                 }else{
                     document.getElementById("song"+i).innerHTML = "";
                     
+                }
+
+                if (document.getElementById("song"+i).innerHTML == "undefined"){
+                    document.getElementById("song"+i).innerHTML = "";
                 }
                 //change style and opacity stuff
             }
@@ -50,11 +54,17 @@
       var drink_img_displayed = false;
 
       //check if the 
-      async function videoCheck(event){
-          var time = 0;
-        for (var i = 0; i < 1000; i ++){
-            setTimeout(function(){ time++;}, 10);
-        }
+      async function videoCheck(){
+        //var time = 0;
+        //for (var i = 0; i < 10; i ++){
+
+            setTimeout(function(){ 
+                if(player.getPlayerState() == -1){
+
+                }
+            }, 10000);
+            console.log("current player state: " + player.getPlayerState());
+        //}
       }
 
 
@@ -81,17 +91,11 @@
             }
             if (song_num >= id_list.length) {
 
-                song_num = 0;
-                id_list = new Array();
-                song_list = new Array();
-                document.getElementById("song_number").innerHTML = '';
-                player.destroy();   
-                console.log("fuck");
-                
+                DestroyPowerHour();
             }
             //loads and plays next video
             console.log("player ended");
-            player.loadVideoById({videoId:id_list[song_num], endSeconds:10});
+            player.loadVideoById({videoId:id_list[song_num], endSeconds:60});
             song_num += 1;
             document.getElementById("song_number").innerHTML = song_num;
             document.getElementsByClassName("drink_img")[0].style.display='block';
@@ -178,10 +182,13 @@
            }
         }
         function DestroyPowerHour() {
-           // document.getElementById("deactivate").disabled = true;
-            player.destroy();
-            id_list = new Array();
+           
             song_num = 0;
+            //id_list = new Array();
+            //song_list = new Array();
+            //document.getElementById("song_number").innerHTML = '';
+            //player.destroy();   
+            console.log("fuck");
         }
     </script>
 
