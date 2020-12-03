@@ -79,7 +79,7 @@
             document.getElementsByClassName("drink_img")[0].style.display='none';
             
         }
-        if (event.data == YT.PlayerState.ENDED){
+        if (event.data == YT.PlayerState.ENDED && first_played){
             //PlayerState.ENDED fires twice everytime so an event trigger is needed to stop the second call to this if statement
             if (event_trigger == 0){
               event_trigger = 1;
