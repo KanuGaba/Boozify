@@ -17,7 +17,7 @@
         </div>
         <div class="search">
             <div class="dropdown">
-                <button class="chooseOne"> (Choose One)  </button>
+                <button class="chooseOne"> Select one &#9660; </button>
                 <div class="options">
                     <a id="Artist" href="#" onclick="SelectQueryType(this.id)">Artist</a>
                     <a id="Genre" href="#" onclick="SelectQueryType(this.id)">Genre</a>
@@ -25,8 +25,10 @@
                 </div>
             </div>
             <div class="searchbar">
-                <form onsubmit="MakePowerHour()">
-                    <input class="searchQuery" type="text" id="search" disabled oninput="SearchInput()">
+                <form autocomplete="off" onsubmit="MakePowerHour()">
+                  <div class="autocomplete">
+                    <input class="searchQuery" type="text" id="search" placeholder="Search with artist name, genre, or Spotify playlist link" disabled oninput="SearchInput()">
+                  </div>
                 </form>
             </div>
         </div>
