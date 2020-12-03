@@ -1,7 +1,6 @@
 #coding: utf-8
 import json
 import flask
-import random
 # Spotify library
 import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
@@ -24,7 +23,7 @@ def getTracksFromSeed(seed, seedType):
     client_credentials_manager = SpotifyClientCredentials(APIs["spotify"]["client_id"], APIs["spotify"]["client_secret"])
     spotify = spotipy.Spotify(client_credentials_manager=client_credentials_manager)
 
-    trackList = set()
+    trackList = []
     attempts = NUM_ATTEMPTS
     while attempts != 0:
         song_limit = NUM_SONGS - len(trackList)
@@ -33,7 +32,7 @@ def getTracksFromSeed(seed, seedType):
         if song_limit == 0:
             break
 
-        print("Attempt Left {}".format(attempts - 1))
+        print("Attempts Left {}".format(attempts - 1))
 
         # Spotify API to find search results
         if seedType == "genre":
@@ -49,7 +48,7 @@ def getTracksFromSeed(seed, seedType):
         for i in results["tracks"]:
             # If there's only one artist add "trackName - artist"
             if (i["artists"].__len__() == 1):
-                trackList.add(i["name"] + " - " + i["artists"][0]["name"])
+                trackList.append(i["name"] + " - " + i["artists"][0]["name"])
             # Else add "trackName - artist1, artist2, etc"
             else:
                 nameString = ""
@@ -57,7 +56,7 @@ def getTracksFromSeed(seed, seedType):
                     nameString += (b["name"])
                     if (i["artists"].__len__() - 1 != index):
                         nameString += ", "
-                trackList.add(i["name"] + " - " + nameString)
+                trackList.append(i["name"] + " - " + nameString)
 
         attempts -= 1
 
@@ -71,7 +70,7 @@ def getTracksFromPlaylist(playlistURL):
     # Spotify API to get a playlist
     results = spotify.user_playlist_tracks(user="",playlist_id=playlistURL)
 
-    trackList = set()
+    trackList = []
 
     for i in results["items"]:
         # Limit playlist to NUM_SONGS
@@ -80,7 +79,7 @@ def getTracksFromPlaylist(playlistURL):
 
         # If there's only one artist add "trackName - artist"
         if (i["track"]["artists"].__len__() == 1):
-            trackList.add(i["track"]["name"] + " - " + i["track"]["artists"][0]["name"])
+            trackList.append(i["track"]["name"] + " - " + i["track"]["artists"][0]["name"])
         # Else add "trackName - artist1, artist2, etc"
         else:
             nameString = ""
@@ -88,12 +87,12 @@ def getTracksFromPlaylist(playlistURL):
                 nameString += (b["name"])
                 if (i["track"]["artists"].__len__() - 1 != index):
                     nameString += ", "
-            trackList.add(i["track"]["name"] + " - " + nameString)
+            trackList.append(i["track"]["name"] + " - " + nameString)
 
     # If playlist is smaller than NUM_SONGS use first artist of first track and search using seed
     if len(trackList) != NUM_SONGS:
         # Get first artist
-        track_info = next(iter(trackList))
+        track_info = trackList[0]
         end_index = track_info.find(",")
         if end_index == -1:
             end_index = len(track_info)
@@ -107,7 +106,7 @@ def getTracksFromPlaylist(playlistURL):
             if song_limit == 0:
                 break
 
-            #print("Attempt Left {}".format(attempts - 1))
+            print("Attempts Left {}".format(attempts - 1))
 
             # Spotify API to find search results
             search = spotify.search(q='artist:' + artist, type='artist')
@@ -119,7 +118,7 @@ def getTracksFromPlaylist(playlistURL):
             for i in results["tracks"]:
                 # If there's only one artist add "trackName - artist"
                 if (i["artists"].__len__() == 1):
-                    trackList.add(i["name"] + " - " + i["artists"][0]["name"])
+                    trackList.append(i["name"] + " - " + i["artists"][0]["name"])
                 # Else add "trackName - artist1, artist2, etc"
                 else:
                     nameString = ""
@@ -127,7 +126,7 @@ def getTracksFromPlaylist(playlistURL):
                         nameString += (b["name"])
                         if (i["artists"].__len__() - 1 != index):
                             nameString += ", "
-                    trackList.add(i["name"] + " - " + nameString)
+                    trackList.append(i["name"] + " - " + nameString)
 
     return trackList
 
@@ -144,27 +143,27 @@ def searchYoutube(songName):
 
 @application.route('/get-tracks', methods=['POST', 'GET'])
 def getTracks():
-    tracks = set()
+    tracks = []
 
     if flask.request.method == 'POST':
         # Get user input and seach using Spotify API
         data = flask.request.get_json()
-        if data['seed'] == "Artist":
-            artist = data['search']
-            tracks = getTracksFromSeed(artist, "artist")
-        elif data['seed'] == "Genre":
-            genre = data['search']
-            tracks = getTracksFromSeed(genre, "genre")
-        elif data['seed'] == "Playlist":
-            playlistURL = data['search']
-            tracks = getTracksFromPlaylist(playlistURL)    
+        try:
+            if data['seed'] == "Artist":
+                artist = data['search']
+                tracks = getTracksFromSeed(artist, "artist")
+            elif data['seed'] == "Genre":
+                genre = data['search']
+                tracks = getTracksFromSeed(genre, "genre")
+            elif data['seed'] == "Playlist":
+                playlistURL = data['search']
+                tracks = getTracksFromPlaylist(playlistURL) 
+        except:
+            print("Error using Spotify API")
     
-    # Convert set to list and randomize
-    trackList = list(tracks)
-    random.shuffle(trackList)
-    #print(trackList)
+    print(tracks)
 
-    return flask.make_response(flask.jsonify({"tracks": trackList}))
+    return flask.make_response(flask.jsonify({"tracks": tracks}))
 
 @application.route('/get-video-id', methods=['POST', 'GET'])
 def getVideoID():
