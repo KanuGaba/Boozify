@@ -130,7 +130,7 @@ function MakePowerHour() {
         })
     })
     .then(function(response) {
-        console.log(response);
+        //console.log(response);
         response.json().then( data => {
             console.log(data);
            
@@ -158,8 +158,10 @@ function MakePowerHour() {
                     })
                     .then((response) => {
                         console.log(response);
-                        console.log(response.json());
-                        return response.json();
+                        var return1 = response.json();
+                        console.log("hello world");
+                        console.log(return1);
+                        return return1;
                     })
                     .then(function(data) {
                         console.log(data.video_id);
