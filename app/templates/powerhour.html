@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html>
+    <header>
+        <title>Boozify</title>
+        <link rel="icon" type="image/png" src="../static/images/favicon.png">
+        <link rel="stylesheet" href="../static/css/powerhour.css">
+    </header>
+    <script src="https://www.youtube.com/iframe_api"></script>
+    <script >
+        var seedString;
+
+        var player;
+        var start = 0;
+        var end = start + 10;
+
+      function animateList(){
+        for(var i = 1; i < 11; i++){
+                    document.getElementById("song"+i).style.opacity = 1;
+        }
+      }
+
+      function updateList(){
+        for(var i = 1; i < 11; i++){
+                document.getElementById("song"+i).style.opacity = 0;
+                if ((id_list.length - (song_num - 11 + i) ) > 9){
+                    document.getElementById("song"+i).innerHTML = song_list[(i - 1) + song_num];
+                    
+                }else{
+                    document.getElementById("song"+i).innerHTML = "";
+                    
+                }
+                //change style and opacity stuff
+            }
+      }
+      function onYouTubeIframeAPIReady() {
+          //console.log("youtube api installed");
+      }
+
+      //id list stores the youtube video ids
+      //song list stores the song - artist name 
+      var id_list = new Array();
+      var song_list = new Array();
+      //id_list.push("smqNtBXN5Mc");
+      //id_list.push("1KGCAffvGIw");
+      //id_list.push("ZAxRozTgoXM");
+      var song_num = 0;
+      var event_trigger = 1;
+      var first_played = false;
+      var lastSong;
+      var drink_img_displayed = false;
+      function onPlayerStateChange(event) {
+          console.log("song_num: " + song_num + " id list len:" + id_list.length);
+
+        if (event.data == YT.PlayerState.PLAYING || event.data == YT.PlayerState.PAUSED){
+            
+            document.getElementsByClassName("drink_img")[0].style.display='none';
+            
+        }
+        if (event.data == YT.PlayerState.ENDED){
+            //PlayerState.ENDED fires twice everytime so an event trigger is needed to stop the second call to this if statement
+            if (event_trigger == 0){
+              event_trigger = 1;
+              return;
+            }
+            else {
+              event_trigger = 0;
+              console.log("switch songs");
+            }
+            if (song_num >= id_list.length) {
+
+                song_num = 0;
+                id_list = new Array();
+                song_list = new Array();
+                document.getElementById("song_number").innerHTML = '';
+                player.destroy();   
+                console.log("fuck");
+                
+            }
+            //loads and plays next video
+            //console.log("player ended");
+            player.loadVideoById({videoId:id_list[song_num], endSeconds:10});
+            song_num += 1;
+            document.getElementById("song_number").innerHTML = song_num;
+            document.getElementsByClassName("drink_img")[0].style.display='block';
+
+            setTimeout(updateList, 1000);
+            setTimeout(animateList, 2000);
+            /*
+            const displa_drink = async() => {
+                await new Promise(function(animateList, animateList){
+                    console.log("animate!")
+                    setTimeout(animateList, 3000);
+                });
+                console.log("DRINK!")
+                 //retransition song list
+               
+            }*/
+
+           
+
+            //todo check logic
+
+
+            //update song list
+            //shift all of the elements up if there are 10 or more songs left
+            //if not then shift elements up and replace the list with blank elements
+          
+            
+            
+         
+            //console.log(song_num);
+            
+        }
+
+        console.log("player state: ", event.data);
+        if (event.data == YT.PlayerState.PLAYING && first_played == false){
+            
+            first_played = true;
+        }
+      }
+      function stopVideo() {
+        player.stopVideo();
+      }
+
+
+        function SelectQueryType(clicked_id){
+            document.getElementsByClassName("chooseOne")[0].innerHTML = clicked_id;
+            document.getElementsByClassName("searchQuery")[0].disabled = false;
+            seedString = clicked_id;
+        }
+
+        function SearchInput(){
+            document.getElementById("power_hour").disabled = false;
+        }
+        
+       
+
+        function LoadPlayer(){
+            id_list = JSON.parse(sessionStorage.getItem("id_list"));
+            song_list = JSON.parse(sessionStorage.getItem("song_list"));
+            console.log(song_list);
+            console.log(id_list);
+            if (id_list.length > 0) {
+                        lastSong = id_list[id_list.length - 1];
+                        //console.log(lastSong);
+                        document.getElementsByClassName("video")[0].style.height = "100%";
+                        document.getElementsByClassName("video")[0].style.width = "90%";
+                        document.getElementsByClassName("video")[0].style.top = "0%";
+                        document.getElementsByClassName("video")[0].style.left = "10%";
+                        player = new YT.Player('player', {
+                            //height: '390',
+                            //width: '640',
+                            videoId: id_list[0],
+                            // videoId: 'M7lc1UVf-VE',
+                            playerVars: {
+                                start: start,
+                                end: end,
+                                controls: 0,
+                                disablekb: 1,
+                                fs: 0
+                            },
+                            events: {
+                                //'onReady': onPlayerReady,
+                                'onStateChange': onPlayerStateChange
+                            }
+                        });
+                        //initialize song list on the side
+                        document.getElementsByClassName("song_list_div")[0].style.display='block';
+                        for(var i = 1; i < 11; i++){
+                            document.getElementById("song"+i).innerHTML = song_list[i-1];
+                            document.getElementById("song"+i).style.opacity = 1;
+                            console.log("list item: " + document.getElementById("song"+i).innerHTML);
+                            //change style and opacity stuff
+                        }
+                        song_num += 1;
+                        document.getElementById("song_number").innerHTML = song_num;
+                        //player.cueVideoById({videoId:id_list[song_num], endSeconds:60, "medium"});
+                        
+                        //document.getElementById("player").style.display = "flex";
+                       // document.getElementById("deactivate").disabled = false;
+                        
+           } else{
+               // return to homepage if the power hour does not load
+               window.location = '..';
+           }
+        }
+        function DestroyPowerHour() {
+           // document.getElementById("deactivate").disabled = true;
+            player.destroy();
+            id_list = new Array();
+            song_num = 0;
+        }
+    </script>
+
+    <body onload="LoadPlayer()" style="background-color:darkslategrey">
+        
+        <div class="back">
+            <a href="..">
+            <img src =/static/images/back-arrow.png>
+            </a>
+        </div>
+    
+        <div class="song_list_div">
+            <ol class="song_list">
+                <li><div value="1" id="song1"></div></li>
+                <li><div id="song2"></div></li>
+                <li>
+                    <div id="song3"></div>
+                </li>
+                <li><div id="song4"></div></li>
+                <li><div id="song5"></div></li>
+                <li><div id="song6"></div></li>
+                <li><div id="song7"></div></li>
+                <li><div id="song8"></div></li>
+                <li><div id="song9"></div></li>
+                <li><div id="song10"></div></li>
+            </ol>
+            
+        </div>
+        <div class="video">
+            
+            <div id="player"></div>
+            <div id="song_number"></div>
+            <!-- add in style later on-->
+            <img class="drink_img" src="/static/images/drink.png">
+        </div>
+        
+       
+
+        <script>
+            /*
+            <img class="beer" src="/static/images/beer.jpg" disabled>
+             <div class="deactivate">
+            <button id="end_power_hour" disabled onclick="DestroyPowerHour()">Destroy Power Hour/retry power hour</button>
+        </div>
+            <div class="video">
+                <iframe 
+                    id="player"
+                    src="" frameborder="0" gesture="media"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
+                </iframe>
+            </div>
+            */
+        </script>
+    </body>
+</html>

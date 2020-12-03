@@ -27,7 +27,7 @@ def getTracksFromSeed(seed, seedType):
         items = search['artists']['items']
         if len(items) > 0:
             artist = items[0]
-            results = spotify.recommendations(seed_artists=[artist['external_urls']['spotify']], limit=10)
+            results = spotify.recommendations(seed_artists=[artist['external_urls']['spotify']], limit=3)
     # elif seedType == "song":
     #     results = spotify.search(q='name:' + seed, type='track')
     #     items = results['tracks']['items']
@@ -52,7 +52,7 @@ def getTracksFromSeed(seed, seedType):
                     nameString += ", "
             # Adding the track to the list.
             trackList.append(i["name"] + " - " + nameString)
-
+    print(trackList);
     return trackList
 
 def getTracksFromPlaylist(playlistURL):
@@ -81,7 +81,7 @@ def getTracksFromPlaylist(playlistURL):
                     nameString += ", "
             # Adding the track to the list.
             trackList.append(i["track"]["name"] + " - " + nameString)
-
+    print(trackList);
     return trackList
 
 def searchYoutube(songName):
@@ -92,6 +92,7 @@ def searchYoutube(songName):
     #video = api.get('search', q=songName, maxResults=1, type='video', order='relevance')
     video = YoutubeSearch(songName, max_results=1).to_dict()
     #return video["items"][0]["id"]["videoId"]
+    print(video);
     return video[0]["id"]
 
 @application.route('/get-link', methods=['POST', 'GET'])
@@ -120,12 +121,15 @@ def getLink():
             for i in tracks:
                 songs.append(searchYoutube(i))
             
-    return flask.make_response(flask.jsonify({"ids": songs}))
+    return flask.make_response(flask.jsonify({"ids": songs}, {"names":tracks}))
 
 @application.route('/', methods=['POST', 'GET'])
 def index():
     return flask.render_template('web.html')
 
+@application.route('/powerhour')
+def powerhour():
+    return flask.render_template('powerhour.html')
 if __name__ == '__main__':
     application.run(host='0.0.0.0', port=8080,debug=True)
     
