@@ -1,0 +1,100 @@
+
+/* Video player iframe */
+.video{
+    display: block;
+    position:fixed; 
+    border:none; padding:0; overflow:hidden; 
+    /*top:10%; left:10%; bottom:0; right:0%; width:90%; height:90%; border:none; padding:0; overflow:hidden; 
+    align-items: center;
+    /*justify-content: center;
+    
+    position: relative;
+    /*bottom: 0; */
+}
+
+.video iframe{
+  width:100%; height:100%;
+  z-index:9;
+}
+/*position:fixed; top:10%; left:10%; bottom:0; right:0%; width:90%; height:90%; border:none; padding:0; overflow:hidden; z-index:9; }*/
+
+.drink_img{
+  position:fixed; top:0%; left:10%; bottom:0; right:0%; width:90%; height:100%; border:none; padding:0; overflow:hidden;
+  display:none;
+  z-index: 10;
+}
+#song_number{
+  border:none; padding:0;
+  position:fixed;
+  bottom: 0%; left:12%;
+  color: white;
+  font-size: 84px;
+  z-index:15;
+}
+
+
+  /* song list */
+  .song_list_div{
+    padding-left: 0.5em;
+    display: flex;
+    position:absolute;
+    top: 10%;
+    left:0%;
+    
+    width: 9.5%;
+    height: 90%;
+    background-color:#4CAF50;
+    list-style-position: inside;
+  }
+  .song_list {
+    /*background-color:;*/
+    color: #f1f1f1; 
+    font-family: Verdana, Geneva, sans-serif;
+    position: absolute;
+    display: inline-grid;
+    height: 100%;
+    list-style-position: inside;
+    margin-left: -3em;
+    margin-top: auto;
+    width:100%;
+  }
+
+
+  .song_list li {
+   
+    display:inline-block;
+    line-height: 269%;
+    border: 3.75px solid black;
+    list-style-type: none;
+    list-style-position:inside;
+    padding: 10px 0.7em;
+    float: left;
+    background-color: 4CAF50;
+    font-size: 10px;
+  }
+  .song_list li div {
+       /* fade in and out */
+    /*animation: fadeOut ease 2s;*/
+    opacity: 0;
+    transition:2s;
+    /*background-color:darkslategrey;*/
+  }
+
+  .back{
+      position: absolute;
+      top:0%;
+      left: 2%;
+      width: 8%;
+      height: 10%;
+      display: inline-table;
+  }
+  .back img{
+    
+    width: 80%;
+    height: 100%;
+  }
+  #back_button{
+      display:table-cell;
+      height: 100%;
+      width:100%;
+  }
