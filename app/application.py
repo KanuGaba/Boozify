@@ -181,6 +181,10 @@ def getVideoID():
 
     return flask.make_response(flask.jsonify({"video_id": video_id}))
 
+@application.route('/powerhour')
+def powerhour():
+    return flask.render_template('powerhour.html')
+
 @application.route('/', methods=['POST', 'GET'])
 def index():
     # token = spotipy.util.prompt_for_user_token(APIs["spotify"]["username"], "playlist-modify-private",
