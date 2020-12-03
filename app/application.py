@@ -140,11 +140,11 @@ def searchYoutube(songName):
     #video = api.get('search', q=songName, maxResults=1, type='video', order='relevance')
     video = YoutubeSearch(songName, max_results=1).to_dict()
     #return video["items"][0]["id"]["videoId"]
+    print(video[0])
     return video[0]["id"]
 
 @application.route('/get-tracks', methods=['POST', 'GET'])
 def getTracks():
-    # songs = []
     tracks = set()
 
     if flask.request.method == 'POST':
@@ -158,11 +158,7 @@ def getTracks():
             tracks = getTracksFromSeed(genre, "genre")
         elif data['seed'] == "Playlist":
             playlistURL = data['search']
-            tracks = getTracksFromPlaylist(playlistURL)
-        
-        # Find YouTube video id from track
-        # for track in tracks:
-        #     songs.append(searchYoutube(track))      
+            tracks = getTracksFromPlaylist(playlistURL)    
     
     # Convert set to list and randomize
     trackList = list(tracks)
@@ -175,6 +171,7 @@ def getTracks():
 def getVideoID():
     video_id = ""
 
+    # Get YouTube video ID of track
     if flask.request.method == 'POST':
         data = flask.request.get_json()
         video_id = searchYoutube(data['track'])
