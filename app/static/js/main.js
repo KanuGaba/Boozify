@@ -118,22 +118,26 @@ function SearchInput(){
     document.getElementById("power_hour").disabled = false;
 }
 
+function searchError() {
+    var searchElem = document.getElementById("search");
+    var delay = 100;
+    var delayer = setInterval(function() {
+        if(delay > 0){
+            searchElem.style.backgroundColor = "#ff0000";
+            delay--;
+        }
+        else{
+            searchElem.value = "";
+            searchElem.style.backgroundColor = "white";
+            clearInterval(delayer);
+        }
+    }, 1);
+}
+
 function MakePowerHour() {
     if (seedString == "Genre") {
         if (!genres.includes(document.getElementById('search').value)) {
-            var searchElem = document.getElementById("search");
-            var delay = 100;
-            var delayer = setInterval(function() {
-                if(delay > 0){
-                    searchElem.style.backgroundColor = "#ff0000";
-                    delay--;
-                }
-                else{
-                    searchElem.value = "";
-                    searchElem.style.backgroundColor = "white";
-                    clearInterval(delayer);
-                }
-            }, 1);
+            searchError();
             return;
         }
     }
@@ -157,7 +161,15 @@ function MakePowerHour() {
         //console.log(response);
         response.json().then( data => {
             console.log(data);
-           
+
+            // Check if Spotify API produced an error
+            if (data.tracks.length == 0) {
+                document.getElementsByClassName("searchQuery")[0].disabled = false;
+                document.getElementById("power_hour").disabled = false;
+                searchError();
+                return;
+            }
+
             document.getElementById("loading").setAttribute("max", data.tracks.length)
             document.getElementById("loading_label").removeAttribute("hidden");
             document.getElementById("loading").removeAttribute("hidden");
