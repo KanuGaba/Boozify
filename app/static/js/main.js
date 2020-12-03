@@ -114,6 +114,9 @@ function SearchInput(){
 }
 
 function MakePowerHour() {
+    document.getElementsByClassName("searchQuery")[0].disabled = true;
+    document.getElementById("power_hour").disabled = true;
+
     var id_list = new Array();
     var song_list = new Array();            
     fetch("/get-tracks", {
