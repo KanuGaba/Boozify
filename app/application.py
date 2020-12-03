@@ -140,7 +140,6 @@ def searchYoutube(songName):
     #video = api.get('search', q=songName, maxResults=1, type='video', order='relevance')
     video = YoutubeSearch(songName, max_results=1).to_dict()
     #return video["items"][0]["id"]["videoId"]
-    print(video[0])
     return video[0]["id"]
 
 @application.route('/get-tracks', methods=['POST', 'GET'])
