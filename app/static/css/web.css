@@ -163,3 +163,8 @@
     -ms-transform: translate(-50%, -50%);
     transform: translate(-50%, -50%);
 }
+
+input[type="text"]::placeholder {  
+    /* Firefox, Chrome, Opera */ 
+    text-align: center; 
+} 
