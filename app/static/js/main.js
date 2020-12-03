@@ -1,4 +1,3 @@
-
         function SelectQueryType(clicked_id){
             document.getElementsByClassName("chooseOne")[0].innerHTML = clicked_id;
             document.getElementsByClassName("searchQuery")[0].disabled = false;
@@ -85,39 +84,3 @@
            
             
         }
-
-
-
-        
-                   // for (song_id  of data[0].ids) {
-                     //   console.log(song_id);
-                        //id_list.push(song_id);
-                    //}               
-                    /* For debugging i am caching a list 
-                    for(var i = 0; i < 12; i ++){
-                        id_list.push("oa7JRuLEp-w");
-                        song_list.push("Tessellate - Tokyo Police Club");
-                        //https://www.youtube.com/watch?v=oa7JRuLEp-w
-                        id_list.push("ZAxRozTgoXM");
-                        song_list.push("Wait Up - Tokyo Police Club");
-                        id_list.push("smqNtBXN5Mc");
-                        song_list.push("Bambi - Tokyo Police Club");
-
-                        id_list.push("1KGCAffvGIw");
-                        song_list.push("Your English is Good - Tokyo Police Club");
-
-                        id_list.push("4MG6rKuCfyo");
-                        song_list.push("Argentina - Tokyo Police Club");
-
-                    }*/
-                   /* DEBUG */
-                   //var i = 1;
-                    //for (song_name of data[1].names){
-                        //var new_songname = song_name.replace("-", "by")
-                       // song_list.push(i + ". " + new_songname);
-                       //i++;
-                    //}
-                    
-                   // console.log(song_list);
-                    
-                    //document.getElementById("player").src = data['link'];
