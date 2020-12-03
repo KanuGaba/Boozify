@@ -175,7 +175,7 @@ def getVideoID():
         video_id = searchYoutube(data['track'])
         print(data)
 
-    return flask.make_response(flask.jsonify({"video_id": video_id}))
+    return flask.make_response(flask.jsonify({"video_id": video_id, "track": data['track']}))
 
 @application.route('/powerhour')
 def powerhour():

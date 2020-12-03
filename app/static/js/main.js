@@ -146,7 +146,9 @@ function MakePowerHour() {
     document.getElementById("power_hour").disabled = true;
 
     var id_list = new Array();
-    var song_list = new Array();            
+    var song_list = new Array();   
+    let song_location = new Map();      
+    let id_map = new Map();   
     fetch("/get-tracks", {
         method: "POST",
         headers: new Headers({
@@ -180,7 +182,9 @@ function MakePowerHour() {
                 var trackCount = 1;
                 var song_name = track;
                 var new_songname = song_name.replace("-", "by")
+                song_location.set(song_list.length, track);
                 song_list.push(song_num + ". " + new_songname);
+                console.log(song_location);
                 song_num++;
                 promises.push(
                     fetch("/get-video-id", {
@@ -197,8 +201,11 @@ function MakePowerHour() {
                         return response.json();
                     })
                     .then(function(data) {
-                        console.log(data.video_id);
-                        id_list.push(data.video_id);
+
+                        console.log(data.video_id + " -> " + data.track);
+                        //id_list.push(data.video_id);
+                        id_map.set(data.track, data.video_id);
+                        console.log(id_map);
                         document.getElementById("loading").setAttribute("value", trackCount);
                         document.getElementById("loading").innerHTML = trackCount + "%";
                         ++trackCount;
@@ -209,8 +216,14 @@ function MakePowerHour() {
             }
             //! ************************************
             Promise.all(promises).then(function() {
-                if (id_list.length > 0) {
-                    console.log(id_list);
+                console.log(id_map);
+                if (id_map.size > 0) {
+                    for(var i = 0; i < song_list.length; i++){
+                        id_list.push(id_map.get(song_location.get(i)));
+                    }
+
+
+                    //console.log(id_list);
 
                     document.getElementById("loading_label").setAttribute("hidden", true);
                     document.getElementById("loading").setAttribute("hidden", true); 
