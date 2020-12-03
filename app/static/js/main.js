@@ -129,6 +129,7 @@ function MakePowerHour() {
                     delay--;
                 }
                 else{
+                    searchElem.value = "";
                     searchElem.style.backgroundColor = "white";
                     clearInterval(delayer);
                 }
