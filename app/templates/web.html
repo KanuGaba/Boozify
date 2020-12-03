@@ -2,7 +2,7 @@
 <html>
     <header>
         <title>Boozify</title>
-        <link rel="icon" type="image/png" src="../static/images/favicon.png">
+        <link rel="icon" type="image/png" src="../static/images/favicon.ico">
         <link rel="stylesheet" href="../static/css/web.css">
     </header>
     <script src="https://www.youtube.com/iframe_api"></script>
@@ -75,6 +75,111 @@
             document.getElementsByClassName("chooseOne")[0].innerHTML = clicked_id;
             document.getElementsByClassName("searchQuery")[0].disabled = false;
             seedString = clicked_id;
+            if (clicked_id=="Genre") {
+                var genres = ["afrobeat","alternative","anime","country","dance","dancehall","death-metal","detroit-techno","disco","disney","edm","electronic","emo","hip-hop","honky-tonk","indie","indie-pop","k-pop","latin","metal","opera","philippines-opm","pop","r-n-b","reggae","rock","soul"];
+                autocomplete(document.getElementById("search"), genres, true);
+            } else {
+                autocomplete(document.getElementById("search"), genres, false);
+            }
+        }
+
+        function autocomplete(inp, arr, isGenre) {
+          var currentFocus;
+          var _listener = function(e) {
+              var a, b, i, val = this.value;
+              // close any already open lists of autocompleted values
+              closeAllLists();
+              if (!val) { return false;}
+              currentFocus = -1;
+              // create a DIV element that will contain the items (values):
+              a = document.createElement("DIV");
+              a.setAttribute("id", this.id + "autocomplete-list");
+              a.setAttribute("class", "autocomplete-items");
+              // append the DIV element as a child of the autocomplete container:
+              this.parentNode.appendChild(a);
+              for (i = 0; i < arr.length; i++) {
+                // check if the item starts with the same letters as the text field value:
+                if (arr[i].substr(0, val.length).toUpperCase() == val.toUpperCase()) {
+                  // create a DIV element for each matching element:
+                  b = document.createElement("DIV");
+                  // make the matching letters bold:
+                  b.innerHTML = "<strong>" + arr[i].substr(0, val.length) + "</strong>";
+                  b.innerHTML += arr[i].substr(val.length);
+                  // insert a input field that will hold the current array item's value:
+                  b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
+                  // execute a function when someone clicks on the item value (DIV element):
+                  b.addEventListener("click", function(e) {
+                      // insert the value for the autocomplete text field:*/
+                      inp.value = this.getElementsByTagName("input")[0].value;
+                      // close the list of autocompleted values
+                      closeAllLists();
+                  });
+                  a.appendChild(b);
+                }
+              }
+          }
+
+          if (!isGenre) {
+              alert("yo");
+              inp.removeEventListener("input", _listener);
+          } else {
+              inp.addEventListener("input", _listener);
+              /*execute a function presses a key on the keyboard:*/
+              inp.addEventListener("keydown", function(e) {
+                  var x = document.getElementById(this.id + "autocomplete-list");
+                  if (x) x = x.getElementsByTagName("div");
+                  if (e.keyCode == 40) {
+                    /*If the arrow DOWN key is pressed,
+                    increase the currentFocus variable:*/
+                    currentFocus++;
+                    /*and and make the current item more visible:*/
+                    addActive(x);
+                  } else if (e.keyCode == 38) { //up
+                    /*If the arrow UP key is pressed,
+                    decrease the currentFocus variable:*/
+                    currentFocus--;
+                    /*and and make the current item more visible:*/
+                    addActive(x);
+                  } else if (e.keyCode == 13) {
+                    /*If the ENTER key is pressed, prevent the form from being submitted,*/
+                    e.preventDefault();
+                    if (currentFocus > -1) {
+                      /*and simulate a click on the "active" item:*/
+                      if (x) x[currentFocus].click();
+                    }
+                  }
+              });
+              function addActive(x) {
+                /*a function to classify an item as "active":*/
+                if (!x) return false;
+                /*start by removing the "active" class on all items:*/
+                removeActive(x);
+                if (currentFocus >= x.length) currentFocus = 0;
+                if (currentFocus < 0) currentFocus = (x.length - 1);
+                /*add class "autocomplete-active":*/
+                x[currentFocus].classList.add("autocomplete-active");
+              }
+              function removeActive(x) {
+                /*a function to remove the "active" class from all autocomplete items:*/
+                for (var i = 0; i < x.length; i++) {
+                  x[i].classList.remove("autocomplete-active");
+                }
+              }
+              function closeAllLists(elmnt) {
+                /*close all autocomplete lists in the document,
+                except the one passed as an argument:*/
+                var x = document.getElementsByClassName("autocomplete-items");
+                for (var i = 0; i < x.length; i++) {
+                  if (elmnt != x[i] && elmnt != inp) {
+                    x[i].parentNode.removeChild(x[i]);
+                  }
+                }
+              }
+              /*execute a function when someone clicks in the document:*/
+              document.addEventListener("click", function (e) {
+                  closeAllLists(e.target);
+              });
+            }
         }
 
         function SearchInput(){
@@ -141,6 +246,7 @@
             id_list = new Array();
             song_num = 0;
         }
+
     </script>
 
     <body style="background-color:darkslategrey">
@@ -149,7 +255,7 @@
         </div>
         <div class="search">
             <div class="dropdown">
-                <button class="chooseOne"> (Choose One)  </button>
+                <button class="chooseOne"> Select one &#9660;</button>
                 <div class="options">
                     <a id="Artist" href="#" onclick="SelectQueryType(this.id)">Artist</a>
                     <a id="Genre" href="#" onclick="SelectQueryType(this.id)">Genre</a>
@@ -157,8 +263,10 @@
                 </div>
             </div>
             <div class="searchbar">
-                <form>
-                    <input class="searchQuery" type="text" id="search" disabled oninput="SearchInput()">
+                <form autocomplete="off">
+                    <div class="autocomplete">
+                        <input class="searchQuery" type="text" id="search" placeholder="Search with artist name, genre, or Spotify playlist link" disabled oninput="SearchInput()">
+                    </div>
                 </form>
             </div>
         </div>
