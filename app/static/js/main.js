@@ -10,9 +10,8 @@
         }
         function MakePowerHour() {
             var id_list = new Array();
-            var song_list = new Array();
-            var success = false;
-            fetch("/get-link", {
+            var song_list = new Array();            
+            fetch("/get-tracks", {
                 method: "POST",
                 headers: new Headers({
                     "content-type": "application/json"
