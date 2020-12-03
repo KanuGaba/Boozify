@@ -106,3 +106,10 @@
     z-index:1;
   }
 
+
+  .progressbar {
+    color:white;
+    display: flex;
+    align-self: center;
+    justify-content: center;
+  }
