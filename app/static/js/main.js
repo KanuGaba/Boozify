@@ -145,7 +145,7 @@ function MakePowerHour() {
     document.getElementsByClassName("searchQuery")[0].disabled = true;
     document.getElementById("power_hour").disabled = true;
 
-    var id_list = new Array();
+    //var id_list = new Array();
     var song_list = new Array();            
     fetch("/get-tracks", {
         method: "POST",
@@ -161,6 +161,7 @@ function MakePowerHour() {
         //console.log(response);
         response.json().then( data => {
             console.log(data);
+            console.log("TRACKS: " + data.tracks);
 
             // Check if Spotify API produced an error
             if (data.tracks.length == 0) {
@@ -198,19 +199,22 @@ function MakePowerHour() {
                     })
                     .then(function(data) {
                         console.log(data.video_id);
-                        id_list.push(data.video_id);
+                        //id_list.push(data.video_id);
                         document.getElementById("loading").setAttribute("value", trackCount);
                         document.getElementById("loading").innerHTML = trackCount + "%";
                         ++trackCount;
-                        return Promise.resolve();
+                        return Promise.resolve(data.video_id);
                     })
                     .catch(console.error)
                 );
             }
             //! ************************************
-            Promise.all(promises).then(function() {
+            Promise.all(promises).then(function(id_list) {
+                console.log("ALL DONE");
+                console.log(promises);
+                console.log(typeof song_list);
                 if (id_list.length > 0) {
-                    console.log(id_list);
+                    console.log("IDS: " + id_list);
 
                     document.getElementById("loading_label").setAttribute("hidden", true);
                     document.getElementById("loading").setAttribute("hidden", true); 
