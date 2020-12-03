@@ -153,3 +153,12 @@
     background-color: #4caf50 !important; 
     color: #ffffff; 
 }
+
+.center {
+    margin: 0;
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
