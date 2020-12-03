@@ -85,6 +85,7 @@ function MakePowerHour() {
         response.json().then( data => {//function(data) {
             console.log(data);
 
+            document.getElementById("loading").setAttribute("max", data.tracks.length)
             document.getElementById("loading_label").removeAttribute("hidden");
             document.getElementById("loading").removeAttribute("hidden");
 
