@@ -13,15 +13,15 @@
         var start = 0;
         var end = start + 10;
 
+      //function animateList(){
+      //  for(var i = 1; i < 11; i++){
+        //    document.getElementById("song"+i).style.opacity = 1;
+//        }
+  //    }
+
       function animateList(){
         for(var i = 1; i < 11; i++){
-                    document.getElementById("song"+i).style.opacity = 1;
-        }
-      }
-
-      function updateList(){
-        for(var i = 1; i < 11; i++){
-                document.getElementById("song"+i).style.opacity = 0;
+                document.getElementById("song"+i).style.opacity = 1;
                 if ((id_list.length - (song_num - 11 + i) ) > 9){
                     document.getElementById("song"+i).innerHTML = song_list[(i - 1) + song_num];
                     
@@ -50,9 +50,11 @@
       var drink_img_displayed = false;
       function onPlayerStateChange(event) {
           console.log("song_num: " + song_num + " id list len:" + id_list.length);
-
+        if (event.data == -1){
+            console.log(player);
+        }
         if (event.data == YT.PlayerState.PLAYING || event.data == YT.PlayerState.PAUSED){
-            
+            console.log("fun fun")
             document.getElementsByClassName("drink_img")[0].style.display='none';
             
         }
@@ -77,38 +79,18 @@
                 
             }
             //loads and plays next video
-            //console.log("player ended");
+            console.log("player ended");
             player.loadVideoById({videoId:id_list[song_num], endSeconds:10});
             song_num += 1;
             document.getElementById("song_number").innerHTML = song_num;
             document.getElementsByClassName("drink_img")[0].style.display='block';
-
-            setTimeout(updateList, 1000);
+            for(var i = 1; i < 11; i++){
+                document.getElementById("song"+i).style.opacity = 0;
+            }
+            //setTimeout(updateList, 1000);
             setTimeout(animateList, 2000);
-            /*
-            const displa_drink = async() => {
-                await new Promise(function(animateList, animateList){
-                    console.log("animate!")
-                    setTimeout(animateList, 3000);
-                });
-                console.log("DRINK!")
-                 //retransition song list
-               
-            }*/
-
-           
-
-            //todo check logic
-
-
-            //update song list
-            //shift all of the elements up if there are 10 or more songs left
-            //if not then shift elements up and replace the list with blank elements
-          
-            
-            
-         
-            //console.log(song_num);
+            console.log("fun");
+       
             
         }
 
@@ -167,7 +149,7 @@
                         //initialize song list on the side
                         document.getElementsByClassName("song_list_div")[0].style.display='block';
                         for(var i = 1; i < 11; i++){
-                            document.getElementById("song"+i).innerHTML = song_list[i-1];
+                            document.getElementById("song"+i).innerHTML = song_list[i];
                             document.getElementById("song"+i).style.opacity = 1;
                             console.log("list item: " + document.getElementById("song"+i).innerHTML);
                             //change style and opacity stuff
