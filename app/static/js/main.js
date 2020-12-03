@@ -16,6 +16,10 @@ function SelectQueryType(clicked_id){
 function autocomplete(inp, arr, isGenre) {
   var currentFocus;
   var _listener = function(e) {
+      // Hacky fix to remove eventListener
+      if (document.getElementsByClassName("chooseOne")[0].innerHTML != "Genre") {
+          return;
+      }
       var a, b, i, val = this.value;
       // close any already open lists of autocompleted values
       closeAllLists();
@@ -49,7 +53,7 @@ function autocomplete(inp, arr, isGenre) {
       }
   }
   if (!isGenre) {
-      inp.removeEventListener("input", _listener);
+      inp.removeEventListener("input", _listener, true); // NOT WORKING??
   } else {
       inp.addEventListener("input", _listener);
       /*execute a function presses a key on the keyboard:*/
