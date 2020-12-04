@@ -155,6 +155,7 @@ def getTracks():
                 tracks = getTracksFromSeed(artist, "artist")
             elif data['seed'] == "Genre":
                 genre = data['search']
+                # Map rap to hip-hop as rap is not a real genre on Spotify
                 if genre == "rap":
                     genre = "hip-hop"
                 tracks = getTracksFromSeed(genre, "genre")
@@ -176,7 +177,6 @@ def getVideoID():
     if flask.request.method == 'POST':
         data = flask.request.get_json()
         video_id = searchYoutube(data['track'])
-        #print(data)
 
     return flask.make_response(flask.jsonify({"video_id": video_id}))
 
@@ -186,10 +186,11 @@ def powerhour():
 
 @application.route('/', methods=['POST', 'GET'])
 def index():
-    # token = spotipy.util.prompt_for_user_token(APIs["spotify"]["username"], "playlist-modify-private",
-    #                                        client_id=APIs["spotify"]["client_id"],
-    #                                        client_secret=APIs["spotify"]["client_secret"],
-    #                                        redirect_uri='http://localhost:8080/')
+    # token = spotipy.util.prompt_for_user_token(APIs["spotify"]["username"],
+            # "playlist-modify-private",
+            # client_id=APIs["spotify"]["client_id"],
+            # client_secret=APIs["spotify"]["client_secret"],
+            # redirect_uri='http://localhost:8080/')
     # spotify_client = spotipy.Spotify(auth=token)
     return flask.render_template('web.html')
 
