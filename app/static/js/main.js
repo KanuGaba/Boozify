@@ -242,7 +242,10 @@ function MakePowerHour() {
                     sessionStorage.setItem("song_list", JSON.stringify(song_list));
                     window.location = '/powerhour';
                 } else {
-                    throw "Search results empty";
+                    // Reset searchQuery
+                    document.getElementsByClassName("searchQuery")[0].disabled = false;
+                    searchError();
+                    return;
                 }
             })
         });
