@@ -163,7 +163,6 @@ function MakePowerHour() {
     document.getElementsByClassName("searchQuery")[0].disabled = true;
     document.getElementById("power_hour").disabled = true;
 
-    var song_list = new Array();
     // Get all tracks from Spotify          
     fetch("/get-tracks", {
         method: "POST",
@@ -194,6 +193,7 @@ function MakePowerHour() {
 
             let promises = [];
             var song_num = 1;
+            var song_list = new Array();
             for (track of data.tracks) {
                 // Modify song name to make it user friendly
                 var song_name = track;
