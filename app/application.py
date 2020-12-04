@@ -155,6 +155,8 @@ def getTracks():
                 tracks = getTracksFromSeed(artist, "artist")
             elif data['seed'] == "Genre":
                 genre = data['search']
+                if genre == "rap":
+                    genre = "hip-hop"
                 tracks = getTracksFromSeed(genre, "genre")
             elif data['seed'] == "Playlist":
                 playlistURL = data['search']
