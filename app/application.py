@@ -23,6 +23,8 @@ def getTracksFromSeed(seed, seedType):
     client_credentials_manager = SpotifyClientCredentials(APIs["spotify"]["client_id"], APIs["spotify"]["client_secret"])
     spotify = spotipy.Spotify(client_credentials_manager=client_credentials_manager)
 
+    print("Searching Spotify with {} {}".format(seedType, seed))
+
     trackList = []
     attempts = NUM_ATTEMPTS
     while attempts != 0:
@@ -67,6 +69,8 @@ def getTracksFromPlaylist(playlistURL):
     client_credentials_manager = SpotifyClientCredentials(APIs["spotify"]["client_id"], APIs["spotify"]["client_secret"])
     spotify = spotipy.Spotify(client_credentials_manager=client_credentials_manager)
 
+    print("Searching Spotify with playlist {}".format(playlistURL))
+
     # Spotify API to get a playlist
     results = spotify.user_playlist_tracks(user="",playlist_id=playlistURL)
 
@@ -91,12 +95,16 @@ def getTracksFromPlaylist(playlistURL):
 
     # If playlist is smaller than NUM_SONGS use first artist of first track and search using seed
     if len(trackList) != NUM_SONGS:
+        print("Playlist does not have enough songs")
+
         # Get first artist
         track_info = trackList[0]
         end_index = track_info.find(",")
         if end_index == -1:
             end_index = len(track_info)
         artist = track_info[track_info.find("-") + 2 : end_index]
+
+        print("Searching Spotify with artist {}".format(artist))
 
         attempts = NUM_ATTEMPTS
         while attempts != 0:
@@ -139,7 +147,6 @@ def searchYoutube(songName):
     #video = api.get('search', q=songName, maxResults=1, type='video', order='relevance')
     video = YoutubeSearch(songName, max_results=1).to_dict()
     #return video["items"][0]["id"]["videoId"]
-    print(video[0])
     return video[0]["id"]
 
 @application.route('/get-tracks', methods=['POST', 'GET'])
@@ -165,7 +172,7 @@ def getTracks():
         except:
             print("Error using Spotify API")
     
-    print(tracks)
+    print("Tracks Found: {}".format(tracks))
 
     return flask.make_response(flask.jsonify({"tracks": tracks}))
 
@@ -177,6 +184,8 @@ def getVideoID():
     if flask.request.method == 'POST':
         data = flask.request.get_json()
         video_id = searchYoutube(data['track'])
+
+    print("Video ID Found: {}".format(video_id))
 
     return flask.make_response(flask.jsonify({"video_id": video_id}))
 
