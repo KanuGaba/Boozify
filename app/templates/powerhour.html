@@ -53,14 +53,23 @@
       var lastSong;
       var drink_img_displayed = false;
 
-      //check if the 
-      async function videoCheck(){
+       //check if the 
+       async function videoCheck(){
         //var time = 0;
         //for (var i = 0; i < 10; i ++){
 
             setTimeout(function(){ 
-                if(player.getPlayerState() == -1){
-
+                if(player.getPlayerState() == -1 && first_played){
+                    player.loadVideoById({videoId:id_list[song_num], endSeconds:60});
+                    song_num += 1;
+                    document.getElementById("song_number").innerHTML = song_num;
+                    document.getElementsByClassName("drink_img")[0].style.display='block';
+                    for(var i = 1; i < 11; i++){
+                    document.getElementById("song"+i).style.opacity = 0;
+                }
+                //setTimeout(updateList, 1000);
+                setTimeout(animateList, 2000);
+                console.log("fun");
                 }
             }, 10000);
             console.log("current player state: " + player.getPlayerState());
