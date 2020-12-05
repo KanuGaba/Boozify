@@ -176,8 +176,7 @@ function MakePowerHour() {
     })
     .then(function(response) {
         response.json().then( data => {
-            console.log(data);
-            console.log("TRACKS: " + data.tracks);
+            console.log("Tracks Found: " + data.tracks);
 
             // Check if Spotify API produced an error
             if (data.tracks.length == 0) {
@@ -217,7 +216,8 @@ function MakePowerHour() {
                         return response.json();
                     })
                     .then(function(data) {
-                        console.log(data.video_id);
+                        console.log("Video ID Found: " + data.video_id);
+
                         // Update loading bar
                         document.getElementById("loading").setAttribute("value", trackCount);
                         document.getElementById("loading").innerHTML = trackCount + "%";
@@ -230,13 +230,9 @@ function MakePowerHour() {
                 );
             }
             Promise.all(promises).then(function(id_list) {
-                console.log("ALL DONE");
-                console.log(promises);
-                console.log(typeof song_list);
+                console.log("Video ID List: " + id_list);
 
-                if (id_list.length > 0) {
-                    console.log("IDS: " + id_list);
-                    
+                if (id_list.length > 0) {                   
                     // Move to new page with power hour, storing info
                     sessionStorage.setItem("id_list", JSON.stringify(id_list));
                     sessionStorage.setItem("song_list", JSON.stringify(song_list));
