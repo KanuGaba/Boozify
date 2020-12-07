@@ -10,7 +10,7 @@ from youtube_search import YoutubeSearch
 
 # Constant vars
 NUM_SONGS = 60
-NUM_ATTEMPTS = 3
+NUM_ATTEMPTS = 3 # Could prob remove attempts logic
 
 application = flask.Flask(__name__)
 
@@ -186,8 +186,8 @@ def getVideoID():
     if flask.request.method == 'POST':
         data = flask.request.get_json()
         video_id = searchYoutube(data['track'])
-
-    print("Video ID Found: {}".format(video_id))
+        print("Searching YouTube with track {}".format(data['track']))
+        print("Video ID Found: {}".format(video_id))
 
     return flask.make_response(flask.jsonify({"video_id": video_id}))
 
