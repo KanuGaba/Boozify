@@ -11,7 +11,7 @@
 
         var player;
         var start = 0;
-        var end = start + 60;
+        var end = start +15;
         var playerData;
       //function animateList(){
       //  for(var i = 1; i < 11; i++){
@@ -60,7 +60,7 @@
 
             setTimeout(function(){ 
                 if(player.getPlayerState() == -1 && first_played){
-                    player.loadVideoById({videoId:id_list[song_num], endSeconds:60});
+                    player.loadVideoById({videoId:id_list[song_num], endSeconds:15});
                     song_num += 1;
                     document.getElementById("song_number").innerHTML = song_num;
                     document.getElementsByClassName("drink_img")[0].style.display='block';
@@ -106,7 +106,7 @@
             }
             //loads and plays next video
             console.log("player ended");
-            player.loadVideoById({videoId:id_list[song_num], endSeconds:60});
+            player.loadVideoById({videoId:id_list[song_num], endSeconds:15});
             song_num += 1;
             document.getElementById("song_number").innerHTML = song_num;
             document.getElementsByClassName("drink_img")[0].style.display='block';
