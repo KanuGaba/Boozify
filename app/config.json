@@ -1,14 +1,14 @@
 {
     "spotify":
     {
-        "client_id": "559ef5d0ee1645ee90ddd79a2f1d873a",
-        "client_secret": "668cff3a57c64cc0ab74052acdbdf0a2",
-        "username": "j2b7v1vvwxiw6f7qz2i6pwd24"
+        "client_id": "<INSERT HERE>",
+        "client_secret": "<INSERT HERE>",
+        "username": "<INSERT HERE>"
     },
     "youtube":
     {
-        "api_key": "AIzaSyBUYCi7XsikLI8J5s_qDr9E6EY-TMAyxK4",
-        "client_id": "109658281620148278312",
+        "api_key": "<INSERT HERE>",
+        "client_id": "<INSERT HERE>",
         "client_secret": ""
     }
 }
